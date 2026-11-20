@@ -1,0 +1,333 @@
+/* PEMESA · Modern, restrained orange-accent design.
+   Keeps the official blue/green logo and existing animations and translations.
+   Orange is an accent, not a replacement for PEMESA's navy/blue identity. */
+:root{
+  --orange:#e97637;
+  --orange-deep:#b74e18;
+  --orange-soft:#fff3e8;
+  --orange-line:#f6d9c2;
+  --modern-navy:#172b50;
+  --modern-muted:#63758e;
+  --modern-shadow:0 18px 48px rgba(22,43,80,.09);
+  --modern-radius:20px;
+}
+
+body{
+  color:var(--modern-navy);
+  -webkit-font-smoothing:antialiased;
+}
+
+/* A crisp, translucent navigation bar gives the site a contemporary feel. */
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:30;
+  border-bottom:1px solid rgba(224,232,241,.85);
+  background:rgba(255,255,255,.94);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);
+  backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:0 7px 26px rgba(21,45,77,.035);
+}
+.public-nav a{position:relative}
+.public-nav a::after{
+  content:"";
+  position:absolute;
+  inset-inline:0;
+  bottom:-12px;
+  height:2px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#e97637,#ffb074);
+  transform:scaleX(0);
+  transition:transform .22s ease;
+}
+.public-nav a.active::after,.public-nav a:hover::after{transform:scaleX(1)}
+.public-nav a.active,.public-nav a:hover{color:#ab4d22}
+.header-actions .language-picker,
+.profile-nav .language-picker{
+  border-color:#e6eaf1;
+  background:linear-gradient(180deg,#fff,#fbfcff);
+  box-shadow:0 3px 10px rgba(25,44,84,.04);
+}
+.header-actions .btn-ghost{
+  border:1px solid #e2edf1;
+  background:#f1f9fc;
+  color:#1d607e;
+}
+.header-actions .btn-ghost:hover{background:#e5f5fa;border-color:#bce4f0}
+.btn{border-radius:12px}
+.btn-navy{
+  background:linear-gradient(115deg,#182d54,#243f70);
+  box-shadow:0 10px 26px rgba(25,44,84,.14);
+}
+.btn-navy:hover{background:linear-gradient(115deg,#203964,#305182)}
+.btn-outline{
+  border-color:#cdd8e8;
+  box-shadow:0 4px 13px rgba(30,52,89,.035);
+}
+.btn-outline:hover{border-color:#efbb95;background:#fff9f5}
+
+.features-section,.how-section,.privacy-section{scroll-margin-top:112px}
+
+/* Warm highlights frame the hero while the main brand stays blue. */
+.landing-hero{
+  background:
+    radial-gradient(ellipse 44% 33% at 94% 24%,rgba(250,176,121,.13),transparent 77%),
+    radial-gradient(ellipse 45% 30% at 4% 62%,rgba(102,192,230,.12),transparent 75%),
+    linear-gradient(180deg,#fff 0%,#fffdfa 43%,#f8fbff 100%);
+}
+.landing-hero::before{
+  content:"";
+  position:absolute;
+  right:clamp(-120px,-5vw,-24px);
+  top:145px;
+  width:300px;
+  height:300px;
+  pointer-events:none;
+  border:1px solid rgba(235,151,89,.13);
+  border-radius:50%;
+  box-shadow:0 0 0 48px rgba(235,151,89,.025),0 0 0 96px rgba(235,151,89,.018);
+}
+.hero-grid{
+  opacity:.45;
+  background-image:
+    linear-gradient(to right,rgba(207,217,232,.32) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(207,217,232,.32) 1px,transparent 1px);
+}
+.glow-left{background:radial-gradient(circle,rgba(112,167,237,.34),transparent 68%)}
+.glow-right{background:radial-gradient(circle,rgba(255,173,118,.38),transparent 68%)}
+.hero-content{isolation:isolate}
+.hero-content .eyebrow{
+  border:1px solid var(--orange-line);
+  background:linear-gradient(115deg,rgba(255,247,241,.98),rgba(255,252,249,.94));
+  color:#a75224;
+  padding:9px 17px;
+  box-shadow:0 8px 24px rgba(214,118,61,.065);
+}
+.hero-content .eyebrow-dot{
+  background:var(--orange);
+  box-shadow:0 0 0 4px rgba(233,118,55,.14);
+}
+.hero-content h1{
+  color:var(--modern-navy);
+  letter-spacing:-.065em;
+  text-wrap:balance;
+}
+.hero-content h1::after{
+  content:"";
+  display:block;
+  margin:22px auto 0;
+  width:76px;
+  height:5px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#e97637,#ffc098);
+  box-shadow:0 3px 12px rgba(233,118,55,.18);
+}
+.hero-content>p{color:#64748d;max-width:660px}
+#site .hero-actions .btn-navy{
+  border:1px solid #253e68;
+  box-shadow:0 14px 30px rgba(21,48,90,.20);
+}
+#site .hero-actions .btn-navy span[aria-hidden="true"]{color:#ffb37d}
+#site .hero-actions .btn-outline{
+  background:rgba(255,255,255,.92);
+  border-color:#d7dfec;
+}
+#site .hero-actions .btn-outline:hover{border-color:#edb082;background:#fff9f3}
+.hero-proof{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:4px;
+  border:1px solid #e8eef3;
+  border-radius:999px;
+  padding:8px 14px;
+  background:rgba(255,255,255,.78);
+  box-shadow:0 7px 18px rgba(38,61,90,.04);
+}
+.hero-proof .proof-icon{background:#e6f8f1;color:#198364}
+
+/* The miniature dashboard becomes a glossy product preview, without
+   replacing its transform (important for the mobile preview scaling). */
+.preview-window{
+  border:1px solid rgba(214,226,240,.90);
+  border-radius:22px 22px 0 0;
+  box-shadow:0 30px 72px rgba(34,64,108,.15),0 8px 28px rgba(38,59,89,.05);
+}
+.preview-browser{background:linear-gradient(180deg,#f7f9fc,#eff4fa)}
+.preview-browser>span:first-child{background:#f39b70}
+.preview-kpi,.preview-card{
+  border-color:#e9edf4;
+  box-shadow:0 8px 22px rgba(28,52,82,.035);
+}
+.preview-kpi:nth-child(2){
+  border-color:#f3e0d1;
+  background:linear-gradient(160deg,#fff,#fffcf9);
+}
+.preview-kpi:nth-child(2) .kpi-icon{
+  color:#b64f1f;
+  background:#fff0e5;
+}
+.preview-card-heading strong{color:#21395b}
+
+/* Cards have gentler corners, a clearer hierarchy, and selective orange. */
+.features-section{padding-top:106px}
+.features-section .section-heading h2,
+.how-copy h2,.privacy-section h2{color:var(--modern-navy);text-wrap:balance}
+.features-section .section-kicker{color:#b35324}
+.feature-grid{gap:20px}
+.feature-card{
+  position:relative;
+  border:1px solid #e7edf5;
+  border-radius:var(--modern-radius);
+  padding:34px;
+  background:linear-gradient(160deg,#fff,#fdfefe);
+  box-shadow:var(--modern-shadow);
+  overflow:hidden;
+}
+.feature-card::before{
+  content:"";
+  position:absolute;
+  height:4px;
+  left:28px;right:28px;top:0;
+  border-radius:0 0 7px 7px;
+  background:linear-gradient(90deg,#58c3dd,transparent);
+  opacity:.8;
+}
+.feature-card:nth-child(2)::before{
+  background:linear-gradient(90deg,var(--orange),#ffc39a 64%,transparent);
+}
+.feature-card:nth-child(2){
+  border-color:#f4e1d5;
+  background:linear-gradient(148deg,#fff,#fffaf6);
+}
+.feature-card:nth-child(2) .feature-icon{
+  background:#fff0e2;
+  color:#b7501d;
+}
+.feature-icon{border-radius:15px;width:50px;height:50px}
+.feature-card h3{font-size:18px;color:#1e3459}
+.feature-card p{line-height:1.75;color:#697991}
+.feature-card>span{color:#237ca1}
+.feature-card:nth-child(2)>span{color:#b04c1d}
+
+/* How-it-works uses a very light warm wash, not an orange-heavy surface. */
+.how-section{
+  border:1px solid #edf0f5;
+  background:linear-gradient(125deg,#f7fbfe 0%,#fffaf5 100%);
+  border-radius:28px;
+  box-shadow:0 22px 55px rgba(32,59,94,.055);
+}
+.how-copy .section-kicker{color:#b35324}
+.steps{gap:13px}
+.step{
+  border:1px solid #e9edf4;
+  border-radius:15px;
+  box-shadow:0 8px 20px rgba(32,59,94,.035);
+}
+.step>span{
+  align-self:flex-start;
+  color:#b64e1c;
+  background:#fff0e5;
+  border-radius:11px;
+  padding:5px 10px;
+}
+.step h3{color:#243a5e}
+.privacy-section{
+  border-color:#f0e4dc;
+  background:linear-gradient(115deg,#fffdfb,#f7fbff);
+  border-radius:24px;
+  box-shadow:0 15px 40px rgba(30,58,92,.05);
+}
+.privacy-symbol{
+  background:#fff0e5;
+  color:#be5a28;
+  border-radius:19px;
+}
+.privacy-section .section-kicker{color:#aa5125}
+.site-footer{background:#fbfcfe;border-top:1px solid #eaf0f6}
+
+/* Consistent modern touch in authentication and the real workspace. */
+.auth-dialog{
+  border:1px solid #e2e9f1;
+  border-radius:23px;
+  background:linear-gradient(180deg,#fffdfb 0,#fff 28%);
+  box-shadow:0 35px 100px rgba(16,33,64,.32);
+}
+.auth-content .section-kicker{color:#b45526}
+.auth-content h2{color:#1b3155}
+#auth-form input{
+  border-color:#d9e1ee;
+  background:#fff;
+  border-radius:11px;
+}
+#auth-form input:focus-visible{
+  outline:3px solid rgba(234,125,66,.22);
+  outline-offset:1px;
+  border-color:#ce7a48;
+}
+#auth-submit{min-height:49px}
+.auth-switch{border:1px solid #e7edf5;border-radius:12px}
+.auth-switch button.selected{border-radius:9px;box-shadow:0 5px 16px rgba(25,44,84,.09)}
+.workspace{background:linear-gradient(135deg,#f6f9fd,#fcfaf8)}
+.app-sidebar{border-color:#e7edf5;box-shadow:4px 0 25px rgba(28,50,80,.025)}
+.app-nav button{border-radius:11px}
+.app-nav button.on{
+  background:linear-gradient(100deg,#e8f5fc,#f4f9fe);
+  color:#1e668b;
+  box-shadow:inset 3px 0 0 var(--orange);
+}
+html[dir="rtl"] .app-nav button.on{box-shadow:inset -3px 0 0 var(--orange)}
+.app-topbar{border-color:#e6edf3}
+.app-heading .section-kicker{color:#ad5226}
+.metric-card,.panel{
+  border:1px solid #e7edf4;
+  border-radius:18px;
+  box-shadow:0 12px 34px rgba(27,53,89,.055);
+}
+.metric-card:nth-child(2){border-top:3px solid #e98a4f}
+.panel .primary{background:linear-gradient(110deg,#1a315b,#274675);border-color:#203a65}
+.panel .primary:hover{background:#2a4b79}
+.panel .day.on{border-color:#f3bc97;background:#fff2e9}
+.mode-badge{background:#fff1e6;color:#a84c1d}
+
+/* Shared profile page aesthetic. */
+.profile-hero{
+  border-color:#ece9e7;
+  background:linear-gradient(125deg,#f8fcff 2%,#fff9f3 100%);
+  box-shadow:var(--modern-shadow);
+}
+.profile-hero .section-kicker{color:#b45828}
+.profile-card{border-radius:17px;border-color:#e6edf4;box-shadow:0 12px 30px rgba(24,49,82,.06)}
+.profile-card:nth-child(2){border-color:#f4dccd;background:#fffaf5}
+
+/* Respect translations and the compact mobile header. */
+html[dir="rtl"] .feature-card::before{left:28px;right:28px}
+html[dir="rtl"] .hero-content .eyebrow,
+html[dir="rtl"] .section-kicker{letter-spacing:0}
+@media(max-width:850px){
+  .features-section{padding-top:75px}
+  .feature-card{padding:27px}
+  .how-section{border-radius:22px}
+}
+@media(max-width:600px){
+  .features-section,.how-section,.privacy-section{scroll-margin-top:16px}
+  .site-header{
+    position:relative; /* avoid a tall sticky two-row header on phones */
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
+  }
+  .landing-hero::before{width:190px;height:190px;top:205px;right:-110px}
+  .hero-content h1::after{margin-top:15px;width:61px;height:4px}
+  .hero-proof{max-width:calc(100% - 18px);border-radius:16px;line-height:1.6}
+  .feature-card{padding:27px;border-radius:17px}
+  .feature-grid{gap:16px}
+  .how-section{box-shadow:none}
+  .privacy-section{border-radius:18px}
+  .auth-dialog{border-radius:20px}
+  .app-sidebar{box-shadow:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .public-nav a::after{transition:none}
+  .landing-hero::before,.glow-left,.glow-right{animation:none}
+}
