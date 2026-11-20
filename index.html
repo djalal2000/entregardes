@@ -46,6 +46,7 @@
           <a href="#confidentialite">Confidentialité</a>
         </nav>
         <div class="header-actions">
+          <label class="language-picker"><span aria-hidden="true">🌐</span><select data-language-select aria-label="Langue"><option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option></select></label>
           <button class="btn btn-ghost" type="button" data-open-auth="signin">Connexion</button>
           <button class="btn btn-navy btn-small" type="button" data-open-auth="signup">Créer un compte <span aria-hidden="true">↗</span></button>
         </div>
@@ -149,16 +150,16 @@
         <button type="button" data-tab="jour"><span aria-hidden="true">◷</span> Saisie des mesures</button>
         <button type="button" data-tab="bilan"><span aria-hidden="true">⌁</span> Analyses</button>
       </nav>
-      <div class="sidebar-bottom"><div class="account-badge"><span class="account-avatar" aria-hidden="true">PM</span><div><strong id="account-name">Mode démo</strong><small id="account-caption">Données de démonstration</small></div></div><button class="btn btn-logout" type="button" id="leave-workspace">Quitter la démo ↗</button></div>
+      <div class="sidebar-bottom"><div class="account-badge"><span class="account-avatar" aria-hidden="true">PM</span><div><strong id="account-name" data-i18n-ignore>Mode démo</strong><small id="account-caption">Données de démonstration</small></div></div><button class="btn btn-logout" type="button" id="leave-workspace">Quitter la démo ↗</button></div>
     </aside>
     <div class="app-content">
-      <header class="app-topbar"><div class="app-breadcrumb">Mon espace <span>/</span> <strong id="page-breadcrumb">Vue d'ensemble</strong></div><div class="topbar-right"><span id="mode-badge" class="mode-badge">Mode démo</span><button type="button" class="btn btn-outline topbar-exit" id="topbar-exit">← Accueil</button></div></header>
+      <header class="app-topbar"><div class="app-breadcrumb">Mon espace <span>/</span> <strong id="page-breadcrumb">Vue d'ensemble</strong></div><div class="topbar-right"><label class="language-picker"><span aria-hidden="true">🌐</span><select data-language-select aria-label="Langue"><option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option></select></label><span id="mode-badge" class="mode-badge">Mode démo</span><button type="button" class="btn btn-outline topbar-exit" id="topbar-exit">← Accueil</button></div></header>
       <main class="app-main"><div class="app-heading"><div><span class="section-kicker" id="app-kicker">PROTOTYPE DE SUIVI</span><h1 id="app-title">Vue d'ensemble</h1><p id="app-intro"></p></div><div class="app-today" id="today-label"></div></div><div id="view"></div><p class="data-note" id="data-note"></p></main>
     </div>
   </div>
 
   <dialog id="auth-dialog" class="auth-dialog" aria-labelledby="auth-title">
-    <div class="auth-top"><span class="auth-logo"><img src="assets/pemesa-logo-transparent.png" alt="Logo PEMESA" width="240" height="149"></span><button id="close-auth" type="button" class="icon-close" aria-label="Fermer">×</button></div>
+    <div class="auth-top"><span class="auth-logo"><img src="assets/pemesa-logo-transparent.png" alt="Logo PEMESA" width="240" height="149"></span><label class="language-picker"><span aria-hidden="true">🌐</span><select data-language-select aria-label="Langue"><option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option></select></label><button id="close-auth" type="button" class="icon-close" aria-label="Fermer">×</button></div>
     <div class="auth-content">
       <span class="section-kicker">BIENVENUE SUR PEMESA</span>
       <h2 id="auth-title">Heureux de vous revoir</h2>
@@ -180,6 +181,7 @@
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="config.js?v=20261120-supabase"></script>
-  <script src="app-v3.js"></script>
+  <script src="i18n.js?v=20261120-lang1"></script>
+  <script src="app-v3.js?v=20261120-lang1"></script>
 </body>
 </html>
