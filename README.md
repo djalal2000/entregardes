@@ -1,35 +1,56 @@
-# EntreGardes
+# PEMESA — prototype web de suivi de la pénibilité au travail
 
-Site responsive inspiré des plateformes SaaS, avec page d'accueil, aperçu illustratif, planning, journal quotidien, tendances et authentification facultative.
+Interface web responsive de démonstration adaptée au projet de recherche PEMESA. Elle présente trois dimensions : **pénibilité ambiante**, **pénibilité de la tâche** et **pénibilité subjective**, en cohérence avec le projet de recherche relatif aux métiers de la santé.
 
-## Démarrage
+## Adresse publique
 
-Ouvrez index.html ou publiez le site sur GitHub Pages. La démo est disponible immédiatement. Les données saisies en mode démo restent dans le localStorage du navigateur sous la clé entregardes.demo.journal.v2 : elles ne sont ni synchronisées ni privées sur un appareil partagé.
+- Domaine actuellement utilisé : **https://shiftcare.me**
+- Le nom de l'application est **PEMESA** ; le nom de domaine reste **shiftcare.me** tant qu'un autre nom de domaine n'est pas acheté et configuré.
+- Le fichier `CNAME` ne doit pas être modifié sans avoir le contrôle du nouveau domaine.
 
-## Activer les comptes et le stockage personnel
+## Fonctionnalités effectivement disponibles
 
-1. Créez un projet sur https://supabase.com.
-2. Exécutez supabase/schema.sql dans SQL Editor.
-3. Dans Authentication, activez le fournisseur e-mail (et la confirmation des adresses si souhaitée).
-4. Dans Authentication > URL Configuration, configurez la Site URL de votre site et les Redirect URLs pour les courriels.
-5. Dans config.js, remplacez les valeurs vides par l'URL Supabase et la clé publique publishable (ou anon legacy) :
+- Page de présentation avec identité visuelle PEMESA et aperçu graphique **fictif, à visée illustrative**.
+- Mode démo : vue d'ensemble, planning des postes (jour/nuit/repos), saisie manuelle des mesures et analyses comparatives par type de poste sur 30 jours.
+- Saisie : sommeil, sieste, fatigue, pas, activité, fréquence cardiaque, température, humidité, niveau sonore et pénibilité perçue.
+- En mode démo, les données saisies restent uniquement dans le navigateur via la clé historique `entregardes.demo.journal.v2` (conservée pour ne pas perdre les entrées précédentes).
+- Si Supabase est configuré, connexion/inscription par e-mail et stockage privé par compte avec des politiques RLS.
 
-    window.ENTREGARDES_CONFIG = {
-      supabaseUrl: "https://VOTRE-PROJET.supabase.co",
-      supabaseAnonKey: "CLE_PUBLIQUE_PUBLISHABLE_OU_ANON"
-    };
+## Fonctionnalités envisagées, non intégrées à ce prototype
 
-6. Publiez et testez inscription, confirmation, connexion et réinitialisation.
+- Connexion automatique de capteurs IoT et de montres connectées.
+- Collecte temps réel des signaux physiologiques / environnementaux.
+- Reconnaissance automatique de gestes métiers, analyse IA et modèles de recherche.
+- Questionnaires scientifiques complets, gestion institutionnelle de campagnes de recherche.
 
-**Important :** ne mettez jamais de service_role / secret key dans un fichier web public. Les règles Row Level Security du script SQL protègent les entrées des utilisateurs. L'aperçu marketing montre des valeurs fictives. Le tableau de bord connecté montre les valeurs réellement enregistrées par l'utilisateur. Les données démo ne sont pas automatiquement migrées vers un compte.
+**Important :** n'utilisez pas cette démonstration pour collecter de véritables données de santé sans cadre juridique et technique adapté. Le mode démo conserve les données dans le stockage local et n'assure ni confidentialité sur un terminal partagé ni synchronisation. PEMESA n'est pas un dispositif médical.
 
-Avant toute utilisation avec des données physiologiques réelles : effectuer une analyse RGPD appropriée, documenter la conservation, les droits d'accès, l'effacement, la sécurité et l'hébergement. EntreGardes ne fournit pas de conseil médical.
+## Activer l'authentification par comptes (facultatif)
 
-## Structure
+La connexion réelle reste inactive tant que Supabase n'est pas configuré.
 
-- index.html : accueil, fenêtre d'authentification et espace de travail
-- style.css : design responsive
-- app.js : données, vues, sauvegarde et authentification
-- config.js : configuration publique optionnelle
-- supabase/schema.sql : table Postgres et règles d'accès
-- CNAME : domaine personnalisé conservé
+1. Créer un projet sur https://supabase.com.
+2. Exécuter `supabase/schema.sql` dans le SQL Editor du projet.
+3. Activer l'authentification e-mail et configurer le processus de confirmation.
+4. Dans **Authentication > URL Configuration**, utiliser votre URL de site en tant que **Site URL** et renseigner les URL de redirection.
+5. Renseigner dans `config.js` les **clés publiques uniquement** :
+
+```js
+window.ENTREGARDES_CONFIG = {
+  supabaseUrl: "https://votre-projet.supabase.co",
+  supabaseAnonKey: "CLE_PUBLIQUE_PUBLISHABLE_OU_ANON"
+};
+```
+
+Ne jamais inclure de clé `service_role` ou secrète dans un fichier web public. Les politiques `Row Level Security` du SQL restreignent l'accès aux données de l'utilisateur connecté. Une revue de sécurité / conformité RGPD est indispensable avant toute collecte réelle de données physiologiques.
+
+## Architecture
+
+- `index.html` : site de présentation + espace de démonstration + fenêtre de connexion.
+- `style-v3.css` : styles actifs de la nouvelle identité.
+- `app-v3.js` : logique active du planning, du suivi et des analyses.
+- `config.js` : configuration publique Supabase (vide par défaut).
+- `supabase/schema.sql` : schéma des données par utilisateur et politiques RLS.
+- `CNAME` : domaine actuel `shiftcare.me`.
+
+Les anciens fichiers `app.js`, `app-v2.js`, `style.css` et `style-v2.css` sont conservés pour historique, mais ne sont pas chargés par le site.
