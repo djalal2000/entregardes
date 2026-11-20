@@ -79,7 +79,13 @@ $('#auth-form').addEventListener('submit',authSubmit);
 $('#year').textContent=new Date().getFullYear();
 if(window.PEMESA_I18N){
   window.PEMESA_I18N.onChange=()=>{
-    if(!$('#workspace').hidden){updateAccount();render();}
+    if(!$('#workspace').hidden){
+      // Preserve unsaved numeric entries and shift selections during locale updates.
+      const draft=Array.from($('#view').querySelectorAll('input,select')).map(el=>el.value);
+      updateAccount();
+      render();
+      $('#view').querySelectorAll('input,select').forEach((el,i)=>{if(draft[i]!==undefined)el.value=draft[i]});
+    }
     if($('#auth-dialog').open) syncAuth();
   };
 }
