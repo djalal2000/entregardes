@@ -66,6 +66,8 @@ body{
 }
 .btn-outline:hover{border-color:#efbb95;background:#fff9f5}
 
+.features-section,.how-section,.privacy-section{scroll-margin-top:112px}
+
 /* Warm highlights frame the hero while the main brand stays blue. */
 .landing-hero{
   background:
@@ -309,6 +311,7 @@ html[dir="rtl"] .section-kicker{letter-spacing:0}
   .how-section{border-radius:22px}
 }
 @media(max-width:600px){
+  .features-section,.how-section,.privacy-section{scroll-margin-top:16px}
   .site-header{
     position:relative; /* avoid a tall sticky two-row header on phones */
     -webkit-backdrop-filter:none;
