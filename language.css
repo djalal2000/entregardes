@@ -1,0 +1,64 @@
+/* PEMESA language menu and right-to-left adjustments. */
+.language-picker{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid #dce7f3;border-radius:9px;
+  padding:7px 9px;background:#f5f9fd;color:#315577;
+  font-size:13px;white-space:nowrap;flex:0 0 auto;
+}
+.language-picker:focus-within{outline:2px solid #53badd;outline-offset:2px}
+.language-picker select{
+  border:0;background:transparent;outline:none;
+  color:#24385c;font-weight:800;cursor:pointer;
+  max-width:99px;min-width:76px;padding:0;
+}
+.auth-top{align-items:center;gap:12px}
+.auth-top .language-picker{margin-inline-start:auto;padding:5px 7px}
+.topbar-right .language-picker{background:#fff}
+.profile-nav{align-items:center}
+html[dir="rtl"] body{font-family:"DM Sans",Tahoma,Arial,sans-serif}
+html[dir="rtl"] .app-nav button,
+html[dir="rtl"] .preview-window,
+html[dir="rtl"] .app-breadcrumb,
+html[dir="rtl"] th,html[dir="rtl"] td{text-align:right}
+html[dir="rtl"] #auth-email,html[dir="rtl"] #auth-password,
+html[dir="rtl"] input[type="date"],html[dir="rtl"] input[type="email"],
+html[dir="rtl"] input[type="number"]{direction:ltr;text-align:left}
+html[dir="rtl"] .auth-content,html[dir="rtl"] .app-main{text-align:right}
+html[dir="rtl"] .text-link{margin-left:0;margin-right:auto}
+html[dir="rtl"] .toast{right:auto;left:22px}
+html[dir="rtl"] .profile-hero,html[dir="rtl"] .profile-section{text-align:right}
+@media(max-width:1100px){
+  .public-nav{gap:12px}
+  .nav-shell{gap:14px}
+}
+@media(max-width:850px){
+  .topbar-right{flex-wrap:wrap;justify-content:flex-end}
+  .profile-nav{gap:12px}
+}
+@media(max-width:600px){
+  #site .site-header,.site-header:has(.profile-nav){height:auto;min-height:76px}
+  #site .site-header .nav-shell,.site-header:has(.profile-nav) .nav-shell{
+    height:auto;min-height:76px;flex-wrap:wrap;gap:7px;padding-block:8px;
+  }
+  #site .site-header .header-actions{
+    width:100%;display:flex;justify-content:space-between;gap:6px;
+  }
+  .header-actions .language-picker{padding:6px;gap:3px}
+  .header-actions .language-picker select{max-width:82px;min-width:66px;font-size:11px}
+  .auth-top{gap:6px}
+  .auth-top .language-picker select{max-width:88px;min-width:68px;font-size:11px}
+  .app-topbar{height:auto;min-height:65px;gap:8px;padding:8px 12px;flex-wrap:wrap}
+  .app-breadcrumb{font-size:11px}
+  .topbar-right{width:100%;justify-content:space-between;gap:6px}
+  .topbar-right .language-picker{padding:5px}
+  .topbar-right .language-picker select{min-width:68px;max-width:88px;font-size:11px}
+  .topbar-right .mode-badge{font-size:10px}
+  .topbar-right .btn{font-size:10px}
+  .profile-nav{width:100%;margin-inline-start:0;flex-wrap:wrap;justify-content:space-between}
+}
+
+@media(max-width:360px){
+  #site .site-header .header-actions{flex-wrap:wrap;justify-content:center}
+  #site .header-actions .btn{padding:7px 9px;font-size:10px}
+  .language-picker select{min-width:60px}
+}
