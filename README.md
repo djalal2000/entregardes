@@ -81,15 +81,15 @@ Les modèles HTML suivants sont fournis dans le dépôt :
 - `supabase/email-templates/confirm-signup.html` — confirmation de l'adresse e-mail ;
 - `supabase/email-templates/reset-password.html` — réinitialisation du mot de passe.
 
-Ils conservent la variable **`{{ .ConfirmationURL }}`** imposée par Supabase, utilisent le logo public PEMESA et affichent un message en français. Ces fichiers sont des **modèles à copier dans le tableau de bord Supabase** : leur présence sur GitHub ne change pas automatiquement les courriels envoyés.
+Ils conservent la variable **`{{ .ConfirmationURL }}`** imposée par Supabase, utilisent le logo public PEMESA et affichent des messages **en anglais**. Ces fichiers sont des **modèles à copier dans le tableau de bord Supabase** : leur présence sur GitHub ne change pas automatiquement les courriels envoyés.
 
 **Pour que l'expéditeur ne soit plus `Supabase Auth <noreply@mail.app.supabase.io>` :**
 
 1. Choisir un service SMTP externe (ex. Resend), y enregistrer le domaine déjà possédé `shiftcare.me` et le **vérifier**.
 2. Chez Namecheap, ajouter uniquement les enregistrements DNS (SPF/DKIM et éventuels autres) *exacts* fournis par ce prestataire. Ne pas supprimer les enregistrements GitHub Pages déjà en place.
 3. Dans Supabase **Authentication → Emails → SMTP Settings** (l'intitulé peut changer), activer le SMTP personnalisé. Renseigner le serveur, port, utilisateur et mot de passe SMTP fournis par le prestataire. Définir le nom **PEMESA** et l'expéditeur `no-reply@shiftcare.me`.
-4. Dans **Authentication → Emails → Templates**, ouvrir **Confirm signup**, mettre pour objet **PEMESA — Confirmez votre adresse e-mail**, puis copier le HTML de `confirm-signup.html`.
-5. Optionnel : pour **Reset password**, mettre pour objet **PEMESA — Réinitialisation de votre mot de passe**, puis copier `reset-password.html`. **Tester et finir le flux de récupération côté application avant d'utiliser cette fonction en production.**
+4. Dans **Authentication → Emails → Templates**, ouvrir **Confirm signup**, mettre pour objet **PEMESA — Confirm your email address**, puis copier le HTML de `confirm-signup.html`.
+5. Optionnel : pour **Reset password**, mettre pour objet **PEMESA — Reset your password**, puis copier `reset-password.html`. **Tester et finir le flux de récupération côté application avant d'utiliser cette fonction en production.**
 6. Dans **Authentication → URL Configuration**, vérifier `https://pemesa.shiftcare.me/`, puis envoyer un **e-mail de test**. Vérifier réception, expéditeur, lien, destinataire, SPF/DKIM et antispam.
 
 **Confidentialité :** les identifiants SMTP et clés API du prestataire sont **secrets**. Ils doivent être saisis dans les paramètres privés de Supabase, jamais dans `config.js`, le code du site, GitHub ou une conversation. Les nouveaux utilisateurs reçoivent toujours le courriel standard tant que le SMTP personnalisé et les modèles ne sont pas configurés.
