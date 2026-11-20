@@ -4,8 +4,8 @@ Interface web responsive de démonstration adaptée au projet de recherche PEMES
 
 ## Adresse publique
 
-- Domaine actuellement utilisé : **https://shiftcare.me**
-- Le nom de l'application est **PEMESA** ; le nom de domaine reste **shiftcare.me** tant qu'un autre nom de domaine n'est pas acheté et configuré.
+- Domaine actuellement utilisé : **https://pemesa.shiftcare.me**
+- Le nom de l'application est **PEMESA** ; le sous-domaine **pemesa.shiftcare.me** est utilisé sur le domaine **shiftcare.me** déjà détenu.
 - Le fichier `CNAME` ne doit pas être modifié sans avoir le contrôle du nouveau domaine.
 
 ## Fonctionnalités effectivement disponibles
@@ -25,24 +25,21 @@ Interface web responsive de démonstration adaptée au projet de recherche PEMES
 
 **Important :** n'utilisez pas cette démonstration pour collecter de véritables données de santé sans cadre juridique et technique adapté. Le mode démo conserve les données dans le stockage local et n'assure ni confidentialité sur un terminal partagé ni synchronisation. PEMESA n'est pas un dispositif médical.
 
-## Activer l'authentification par comptes (facultatif)
+## Authentification et stockage Supabase
 
-La connexion réelle reste inactive tant que Supabase n'est pas configuré.
+Le site PEMESA est configuré pour communiquer avec le projet Supabase via sa **Project URL** et une **publishable key publique** dans `config.js`. Il n'est pas nécessaire de connecter l'intégration GitHub dans le tableau de bord Supabase pour que les comptes fonctionnent depuis GitHub Pages.
 
-1. Créer un projet sur https://supabase.com.
-2. Exécuter `supabase/schema.sql` dans le SQL Editor du projet.
-3. Activer l'authentification e-mail et configurer le processus de confirmation.
-4. Dans **Authentication > URL Configuration**, utiliser votre URL de site en tant que **Site URL** et renseigner les URL de redirection.
-5. Renseigner dans `config.js` les **clés publiques uniquement** :
+Pour terminer l'activation côté Supabase :
 
-```js
-window.ENTREGARDES_CONFIG = {
-  supabaseUrl: "https://votre-projet.supabase.co",
-  supabaseAnonKey: "CLE_PUBLIQUE_PUBLISHABLE_OU_ANON"
-};
-```
+1. Dans **SQL Editor**, exécuter `supabase/schema.sql` une seule fois (ou adapter les policies existantes avant toute réexécution). La table `journal_entries` doit avoir **RLS activé** avec les politiques utilisateur fournies.
+2. Dans **Authentication → URL Configuration**, renseigner la **Site URL** `https://pemesa.shiftcare.me/` et autoriser la redirection `https://pemesa.shiftcare.me/**`.
+3. Dans **Authentication → Sign In / Providers**, activer **Email**, autoriser les inscriptions et garder la confirmation des e-mails activée.
+4. Pour les **tests**, vérifier les limites de l'envoi d'e-mails par défaut (parfois restreint aux adresses autorisées). Pour inviter de véritables utilisateurs, configurer un service **SMTP personnalisé**, vérifier son domaine, puis tester les e-mails de confirmation et de réinitialisation.
+5. Tester sur le site avec un **compte de test dédié** et des valeurs fictives ; vérifier qu'un compte ne peut pas lire les observations d'un autre compte.
 
-Ne jamais inclure de clé `service_role` ou secrète dans un fichier web public. Les politiques `Row Level Security` du SQL restreignent l'accès aux données de l'utilisateur connecté. Une revue de sécurité / conformité RGPD est indispensable avant toute collecte réelle de données physiologiques.
+Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `config.js`, qui accepte la **publishable key**. Ne jamais ajouter de `service_role`, de secret `sb_secret_` ou de mot de passe serveur au dépôt public.
+
+**Attention — données de santé :** cette démonstration n'est pas prête à recueillir des données physiologiques nominatives réelles. Avant une étude avec des participants, faire valider les aspects RGPD et les exigences françaises applicables à l'hébergement de données de santé (HDS si requis), le consentement, la sécurité et la gouvernance des données.
 
 ## Architecture
 
@@ -51,7 +48,7 @@ Ne jamais inclure de clé `service_role` ou secrète dans un fichier web public.
 - `app-v3.js` : logique active du planning, du suivi et des analyses.
 - `config.js` : configuration publique Supabase (vide par défaut).
 - `supabase/schema.sql` : schéma des données par utilisateur et politiques RLS.
-- `CNAME` : domaine actuel `shiftcare.me`.
+- `CNAME` : sous-domaine officiel actuel `pemesa.shiftcare.me`.
 
 Les anciens fichiers `app.js`, `app-v2.js`, `style.css` et `style-v2.css` sont conservés pour historique, mais ne sont pas chargés par le site.
 
