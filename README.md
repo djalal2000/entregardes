@@ -54,3 +54,20 @@ Ne jamais inclure de clé `service_role` ou secrète dans un fichier web public.
 - `CNAME` : domaine actuel `shiftcare.me`.
 
 Les anciens fichiers `app.js`, `app-v2.js`, `style.css` et `style-v2.css` sont conservés pour historique, mais ne sont pas chargés par le site.
+
+
+## Référencement Google (SEO) — requête « PEMESA »
+
+Le site fournit des balises meta adaptées, un lien `canonical`, des données structurées `WebSite`, `robots.txt` et `sitemap.xml` pour faciliter la découverte de l'accueil par les moteurs de recherche.
+
+**La publication du code ne suffit pas à faire apparaître automatiquement PEMESA dans les résultats Google.** Le domaine `pemesa.shiftcare.me` doit d'abord être fonctionnel (DNS Namecheap : CNAME `pemesa` vers `djalal2000.github.io`, contrôle HTTPS GitHub Pages).
+
+Pour demander l'indexation :
+1. Ouvrir https://search.google.com/search-console/welcome avec son compte Google.
+2. Ajouter la propriété de type **Préfixe d'URL** `https://pemesa.shiftcare.me/`.
+3. Vérifier que vous êtes propriétaire du site selon la méthode proposée (balise HTML à insérer dans `index.html`, fichier HTML à déposer à la racine du dépôt, ou vérification DNS via Namecheap).
+4. Dans **Inspection de l'URL**, inspecter `https://pemesa.shiftcare.me/` puis demander l'indexation si l'URL est accessible.
+5. Dans **Sitemaps**, soumettre `sitemap.xml`.
+6. Surveiller la rubrique **Indexation des pages** et rechercher `site:pemesa.shiftcare.me` sur Google pour vérifier la présence éventuelle du site.
+
+Google décide seul du moment et du classement de l'indexation ; aucune position sur le mot-clé « pemesa » n'est garantie. Ne modifiez pas `CNAME` pour cette démarche.
