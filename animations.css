@@ -170,3 +170,26 @@
   .preview-chart svg path[stroke="#43c2eb"],
   .overview-chart svg polyline{stroke-dashoffset:0}
 }
+
+
+/* Preserve card lift interactions after their viewport reveal has completed. */
+@media(hover:hover) and (pointer:fine){
+  html.motion-enabled .reveal-on-scroll.is-visible.feature-card:hover{
+    transform:translate3d(0,-6px,0);
+  }
+  html.motion-enabled .reveal-on-scroll.is-visible.metric-card:hover{
+    transform:translate3d(0,-3px,0);
+  }
+}
+
+/* The miniature dashboard uses transform:scale(...) at narrow widths;
+   fade it without overwriting that carefully tuned responsive transform. */
+@keyframes pm-preview-fade{
+  from{opacity:0}
+  to{opacity:1}
+}
+@media(max-width:600px){
+  .landing-hero .preview-wrap{
+    animation:pm-preview-fade 1s .8s ease-out both;
+  }
+}
