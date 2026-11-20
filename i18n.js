@@ -755,11 +755,11 @@
     "ar": "شيفرة GitHub"
   },
   "Présentation de mon travail sur le site web": {
-    "en": "An overview of my work on the",
-    "ar": "نظرة عامة على عملي في موقع"
+    "en": "A look at my work on",
+    "ar": "لمحة عن عملي على"
   },
   "un prototype de suivi et d'exploration de la pénibilité au travail dans les métiers de la santé.": {
-    "en": "a prototype for tracking and exploring workplace strain in healthcare occupations.",
+    "en": "a prototype for tracking and exploring workplace strain in healthcare occupations."
     "ar": "نموذج أولي لتتبع واستكشاف مشقة العمل في مهن الرعاية الصحية."
   },
   "Découvrir PEMESA": {
@@ -829,6 +829,7 @@
       if(from.length<=3) continue;
       if(result.includes(from)) result=result.split(from).join(entries[from][current]);
     }
+    if(current!=='fr') result=result.replace(/\bau\b/g,current==='en'?'to':'إلى');
     return result;
   }
   function localizeText(node){
