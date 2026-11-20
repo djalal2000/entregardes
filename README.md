@@ -107,3 +107,14 @@ Une option de langue est disponible dans l’en-tête de la page d’accueil, da
 La préférence est enregistrée localement dans le navigateur (`localStorage`, clé `pemesa.language`). Le titre de page, les textes de l’interface, les principaux messages de connexion et les dates du tableau de bord s’adaptent au choix. La logique des comptes Supabase, les données sauvegardées et le domaine ne sont pas modifiés. Les traductions sont dans `i18n.js` ; les ajustements de mise en page dans `language.css`.
 
 **Limite :** le sélecteur traduit l'interface web, **pas** automatiquement les e-mails d’authentification Supabase. Les modèles d’e-mails gérés dans Supabase conservent leur langue configurée tant qu’aucune logique d’envoi multilingue n’est mise en place. Vérifier le rendu sur mobile et les champs de données saisis manuellement avant une mise en production destinée à des participants.
+
+
+## Animations et accessibilité
+
+La page d’accueil PEMESA utilise des animations légères :
+- apparition progressive du titre, du logo et de l’aperçu du tableau de bord ;
+- révélation des sections au défilement (IntersectionObserver) ;
+- effets de survol discrets sur les boutons, les cartes et les éléments du tableau de bord ;
+- apparition de la fenêtre d’authentification et tracé des graphiques de démonstration.
+
+Les styles sont séparés dans `animations.css` et le déclenchement des apparitions dans `animations.js`. `app-v3.js` prévient le gestionnaire des animations quand les vues du tableau de bord sont reconstruites. Ces animations respectent `prefers-reduced-motion: reduce`, et le contenu reste visible si JavaScript ou IntersectionObserver n'est pas disponible. Aucun service tiers n’est nécessaire pour les animations ; les comptes Supabase, les données utilisateurs et la navigation FR/EN/AR ne sont pas modifiés.
