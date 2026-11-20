@@ -118,3 +118,10 @@ La page d’accueil PEMESA utilise des animations légères :
 - apparition de la fenêtre d’authentification et tracé des graphiques de démonstration.
 
 Les styles sont séparés dans `animations.css` et le déclenchement des apparitions dans `animations.js`. `app-v3.js` prévient le gestionnaire des animations quand les vues du tableau de bord sont reconstruites. Ces animations respectent `prefers-reduced-motion: reduce`, et le contenu reste visible si JavaScript ou IntersectionObserver n'est pas disponible. Aucun service tiers n’est nécessaire pour les animations ; les comptes Supabase, les données utilisateurs et la navigation FR/EN/AR ne sont pas modifiés.
+
+
+## Identité visuelle : accents orange
+
+La nouvelle finition dans `modern-theme.css` conserve le bleu marine, le bleu clair et le logo officiel PEMESA, en ajoutant **une touche d'orange** (`#e97637`) sur le badge de recherche, les séparateurs, une carte de fonctionnalités, certaines icônes, les états actifs, le formulaire et la navigation du tableau de bord. L'en-tête est plus léger, les cartes plus aérées et les surfaces plus modernes.
+
+La feuille est chargée **après** `style-v5.css`, `language.css` et `animations.css` pour éviter de modifier le style historique et conserver les fonctionnalités existantes (français, anglais, arabe RTL, animations, GitHub Pages et connexion Supabase). Les contrastes forts restent en bleu marine ; les petites touches orange utilisent une nuance foncée pour le texte. Sur mobile, l'en-tête n'est pas fixé afin de préserver l'espace visible.
