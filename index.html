@@ -1,1 +1,159 @@
-<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#143f42"><title>EntreGardes · Mon carnet de suivi</title><link rel="stylesheet" href="style.css"><header><div class="top"><strong class="brand"><span class="logo">∿</span> EntreGardes</strong><nav aria-label="Navigation principale"><button data-tab="planning">Mon planning</button><button data-tab="jour">Ma journée</button><button data-tab="bilan">Mes tendances</button></nav></div></header><main><section class="hero"><div><small>MON CARNET DE SUIVI</small><h1></h1><p id="intro"></p></div><div class="pulse" aria-hidden="true">∿</div></section><section id="view"></section><p id="status" role="status"></p></main><footer>EntreGardes <span>Stockage local sur ce navigateur</span></footer><script src="app.js"></script></html>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#192c54">
+  <meta name="description" content="EntreGardes, votre espace personnel pour suivre vos gardes, votre sommeil et votre récupération.">
+  <title>EntreGardes — Comprendre son rythme, entre deux gardes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="site">
+    <header class="site-header">
+      <div class="nav-shell">
+        <a href="#" class="brand" aria-label="EntreGardes, accueil">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="13" fill="#192C54"/><path d="M6 21h8l4-8 5 16 4-8h7" stroke="#77E3F8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>entre<span class="brand-accent">gardes</span></span>
+        </a>
+        <nav class="public-nav" aria-label="Navigation principale">
+          <a class="active" href="#accueil">Accueil</a>
+          <a href="#fonctionnalites">Fonctionnalités</a>
+          <a href="#comment-ca-marche">Comment ça marche</a>
+          <a href="#confidentialite">Confidentialité</a>
+        </nav>
+        <div class="header-actions">
+          <button class="btn btn-ghost" type="button" data-open-auth="signin">Connexion</button>
+          <button class="btn btn-navy btn-small" type="button" data-open-auth="signup">Créer un compte <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="accueil">
+      <section class="landing-hero" aria-labelledby="hero-heading">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="glow glow-left" aria-hidden="true"></div>
+        <div class="glow glow-right" aria-hidden="true"></div>
+        <div class="hero-content">
+          <span class="eyebrow"><span class="eyebrow-dot"></span> LE CARNET DES PROFESSIONNELS EN HORAIRES DÉCALÉS</span>
+          <h1 id="hero-heading">Vos gardes changent.<br><span>Votre équilibre compte.</span></h1>
+          <p>Planning, sommeil, fatigue, activité : retrouvez les repères qui vous aident à mieux comprendre votre rythme, dans un seul espace personnel.</p>
+          <div class="hero-actions">
+            <button class="btn btn-navy btn-large" type="button" data-open-auth="signup">Commencer gratuitement <span aria-hidden="true">↗</span></button>
+            <button class="btn btn-outline btn-large" type="button" data-demo>Explorer la démo <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="hero-proof"><span class="proof-icon" aria-hidden="true">✓</span> Pensé pour vos journées, vos nuits et vos repos</div>
+        </div>
+
+        <div class="preview-wrap">
+          <div class="preview-window" aria-label="Aperçu illustratif du tableau de bord EntreGardes">
+            <div class="preview-browser"><span></span><span></span><span></span><div class="preview-url">entre​gardes / tableau-de-bord</div></div>
+            <div class="preview-body">
+              <aside class="preview-aside">
+                <div class="preview-brand"><span class="preview-square">∿</span> entregardes</div>
+                <div class="preview-aside-caption">ESPACE PERSONNEL</div>
+                <div class="preview-menu preview-selected">▦ &nbsp; Vue d'ensemble</div>
+                <div class="preview-menu">▦ &nbsp; Mon planning</div>
+                <div class="preview-menu">◷ &nbsp; Ma journée</div>
+                <div class="preview-menu">⌁ &nbsp; Mes tendances</div>
+                <div class="preview-aside-bottom"><span class="avatar-mini">EG</span> Mon espace <span>⌄</span></div>
+              </aside>
+              <div class="preview-main">
+                <div class="preview-topline"><div><span class="preview-caption">VUE D'ENSEMBLE</span><h2>Votre tableau de bord <span class="wave-emoji" aria-hidden="true">✦</span></h2><p>Un regard clair sur votre rythme, jour après jour.</p></div><span class="preview-calendar">◷ &nbsp; Cette semaine</span></div>
+                <div class="preview-kpis">
+                  <div class="preview-kpi"><div><span>Sommeil moyen</span><span class="kpi-icon sky">☾</span></div><strong>7,4 <small>h</small></strong><span class="kpi-foot"><b>↗</b> sur 7 jours</span></div>
+                  <div class="preview-kpi"><div><span>Fatigue ressentie</span><span class="kpi-icon violet">◉</span></div><strong>3 <small>/10</small></strong><span class="kpi-foot">À votre rythme</span></div>
+                  <div class="preview-kpi"><div><span>Activité moyenne</span><span class="kpi-icon aqua">⌁</span></div><strong>8 420 <small>pas</small></strong><span class="kpi-foot">Moyenne journalière</span></div>
+                </div>
+                <div class="preview-panels">
+                  <div class="preview-card preview-chart">
+                    <div class="preview-card-heading"><div><strong>Sommeil & récupération</strong><span>Évolution sur les 7 derniers jours</span></div><span class="chart-legend"><i></i> Sommeil</span></div>
+                    <svg viewBox="0 0 540 176" role="img" aria-label="Exemple de courbe de sommeil sur une semaine" preserveAspectRatio="none">
+                      <defs><linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#66d4f6" stop-opacity=".28"/><stop offset="1" stop-color="#66d4f6" stop-opacity="0"/></linearGradient></defs>
+                      <g stroke="#ebf0f7" stroke-width="1"><path d="M0 28H540M0 72H540M0 116H540M0 160H540"/></g>
+                      <path d="M0 108 C30 97 54 55 88 64S150 127 180 92S235 43 270 67S331 103 360 65S425 83 450 47S510 75 540 30V176H0Z" fill="url(#chart-fill)"/>
+                      <path d="M0 108 C30 97 54 55 88 64S150 127 180 92S235 43 270 67S331 103 360 65S425 83 450 47S510 75 540 30" fill="none" stroke="#43c2eb" stroke-width="3" stroke-linecap="round"/>
+                      <g fill="#43c2eb" stroke="#fff" stroke-width="3"><circle cx="88" cy="64" r="5"/><circle cx="270" cy="67" r="5"/><circle cx="450" cy="47" r="5"/></g>
+                    </svg>
+                    <div class="preview-chart-labels"><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span></div>
+                  </div>
+                  <div class="preview-card preview-schedule">
+                    <div class="preview-card-heading"><div><strong>Mes prochains postes</strong><span>Votre semaine en un regard</span></div></div>
+                    <div class="mini-shift"><span class="shift-day">LUN <b>16</b></span><span class="shift-pill night">☾ Nuit</span></div>
+                    <div class="mini-shift"><span class="shift-day">MAR <b>17</b></span><span class="shift-pill rest">◦ Repos</span></div>
+                    <div class="mini-shift"><span class="shift-day">MER <b>18</b></span><span class="shift-pill day">☼ Jour</span></div>
+                    <div class="mini-shift"><span class="shift-day">JEU <b>19</b></span><span class="shift-pill day">☼ Jour</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="preview-disclaimer">Aperçu illustratif • Valeurs d'exemple, pas des données réelles</span>
+        </div>
+      </section>
+
+      <section id="fonctionnalites" class="section-shell features-section">
+        <div class="section-heading"><span class="section-kicker">TOUT AU MÊME ENDROIT</span><h2>Un espace simple. Une vision plus claire.</h2><p>Moins de tableaux à remplir, plus de repères pour mieux suivre votre quotidien.</p></div>
+        <div class="feature-grid">
+          <article class="feature-card"><div class="feature-icon blue">▦</div><h3>Un planning qui vous ressemble</h3><p>Notez vos postes de jour, de nuit et vos jours de repos, semaine après semaine.</p><span>Planning personnalisé <b aria-hidden="true">↗</b></span></article>
+          <article class="feature-card"><div class="feature-icon teal">◷</div><h3>Un journal pour chaque journée</h3><p>Renseignez sommeil, fatigue, activité et fréquence cardiaque à votre rythme.</p><span>Suivi au quotidien <b aria-hidden="true">↗</b></span></article>
+          <article class="feature-card"><div class="feature-icon purple">⌁</div><h3>Des tendances qui ont du sens</h3><p>Comparez vos mesures selon vos types de postes, sans jargon ni complexité.</p><span>Bilans compréhensibles <b aria-hidden="true">↗</b></span></article>
+        </div>
+      </section>
+
+      <section id="comment-ca-marche" class="section-shell how-section">
+        <div class="how-copy"><span class="section-kicker">COMMENT ÇA MARCHE</span><h2>Vous gardez le rythme.<br>Nous gardons le fil.</h2><p>EntreGardes est un carnet de suivi personnel, pas un dispositif médical. Quelques minutes suffisent pour commencer à voir vos habitudes.</p><button type="button" class="btn btn-navy" data-demo>Essayer le tableau de bord <span aria-hidden="true">→</span></button></div>
+        <div class="steps"><div class="step"><span>01</span><div><h3>Planifiez vos postes</h3><p>Jour, nuit ou repos : posez les bases de votre semaine.</p></div></div><div class="step"><span>02</span><div><h3>Renseignez votre journée</h3><p>Ajoutez seulement les mesures que vous avez relevées.</p></div></div><div class="step"><span>03</span><div><h3>Explorez vos tendances</h3><p>Retrouvez vos moyennes et comparez vos rythmes de travail.</p></div></div></div>
+      </section>
+
+      <section id="confidentialite" class="section-shell privacy-section"><div class="privacy-symbol" aria-hidden="true">◇</div><div><span class="section-kicker">VOTRE ESPACE, VOS REPÈRES</span><h2>La confidentialité commence par la clarté.</h2><p>La démo fonctionne dans votre navigateur. Avec un compte configuré, vos mesures sont enregistrées dans un espace personnel protégé par des règles d'accès. Aucune connexion à des capteurs ni analyse médicale n'est simulée.</p></div><button type="button" class="btn btn-outline" data-open-auth="signup">Créer mon espace →</button></section>
+    </main>
+    <footer class="site-footer"><div class="section-shell footer-inner"><span class="footer-brand">∿ <strong>entregardes</strong></span><span>Un carnet pour mieux comprendre ses rythmes de travail.</span><span>© <span id="year"></span> EntreGardes</span></div></footer>
+  </div>
+
+  <div id="workspace" class="workspace" hidden>
+    <aside class="app-sidebar">
+      <a href="#" class="brand app-brand" data-home aria-label="Retour à l'accueil"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="13" fill="#192C54"/><path d="M6 21h8l4-8 5 16 4-8h7" stroke="#77E3F8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>entre<span class="brand-accent">gardes</span></span></a>
+      <p class="sidebar-label">MON ESPACE</p>
+      <nav class="app-nav" aria-label="Navigation de mon espace">
+        <button type="button" data-tab="overview"><span aria-hidden="true">▦</span> Vue d'ensemble</button>
+        <button type="button" data-tab="planning"><span aria-hidden="true">▦</span> Mon planning</button>
+        <button type="button" data-tab="jour"><span aria-hidden="true">◷</span> Ma journée</button>
+        <button type="button" data-tab="bilan"><span aria-hidden="true">⌁</span> Mes tendances</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="account-badge"><span class="account-avatar" aria-hidden="true">EG</span><div><strong id="account-name">Mode démo</strong><small id="account-caption">Données de démonstration</small></div></div><button class="btn btn-logout" type="button" id="leave-workspace">Quitter la démo ↗</button></div>
+    </aside>
+    <div class="app-content">
+      <header class="app-topbar"><div class="app-breadcrumb">Mon espace <span>/</span> <strong id="page-breadcrumb">Vue d'ensemble</strong></div><div class="topbar-right"><span id="mode-badge" class="mode-badge">Mode démo</span><button type="button" class="btn btn-outline topbar-exit" id="topbar-exit">← Accueil</button></div></header>
+      <main class="app-main"><div class="app-heading"><div><span class="section-kicker" id="app-kicker">VOTRE ESPACE PERSONNEL</span><h1 id="app-title">Vue d'ensemble</h1><p id="app-intro"></p></div><div class="app-today" id="today-label"></div></div><div id="view"></div><p class="data-note" id="data-note"></p></main>
+    </div>
+  </div>
+
+  <dialog id="auth-dialog" class="auth-dialog" aria-labelledby="auth-title">
+    <div class="auth-top"><span class="auth-logo">∿</span><button id="close-auth" type="button" class="icon-close" aria-label="Fermer">×</button></div>
+    <div class="auth-content">
+      <span class="section-kicker">BIENVENUE SUR ENTREGARDES</span>
+      <h2 id="auth-title">Heureux de vous revoir</h2>
+      <p id="auth-subtitle">Connectez-vous pour retrouver votre espace personnel.</p>
+      <div class="auth-switch" id="auth-switch"><button type="button" data-auth-mode="signin" class="selected">Connexion</button><button type="button" data-auth-mode="signup">Créer un compte</button></div>
+      <form id="auth-form">
+        <label id="name-wrap" hidden>Votre nom <input id="auth-name" name="name" autocomplete="name" maxlength="80"></label>
+        <label>Adresse e-mail <input id="auth-email" name="email" type="email" autocomplete="email" required placeholder="vous@exemple.fr"></label>
+        <label id="password-wrap">Mot de passe <input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="8" required placeholder="8 caractères minimum"></label>
+        <button type="button" id="forgot-password" class="text-link">Mot de passe oublié ?</button>
+        <p id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></p>
+        <button type="submit" id="auth-submit" class="btn btn-navy btn-block">Se connecter →</button>
+      </form>
+      <div class="auth-divider"><span>ou</span></div>
+      <button class="btn btn-outline btn-block" type="button" data-demo>Explorer sans compte (démo) →</button>
+      <p id="auth-config-note" class="auth-fineprint">Pour activer les comptes, connectez un projet Supabase (voir README).</p>
+    </div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
