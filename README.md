@@ -95,3 +95,15 @@ Ils conservent la variable **`{{ .ConfirmationURL }}`** imposée par Supabase, u
 **Confidentialité :** les identifiants SMTP et clés API du prestataire sont **secrets**. Ils doivent être saisis dans les paramètres privés de Supabase, jamais dans `config.js`, le code du site, GitHub ou une conversation. Les nouveaux utilisateurs reçoivent toujours le courriel standard tant que le SMTP personnalisé et les modèles ne sont pas configurés.
 
 Pour de vrais utilisateurs, prévoir un domaine d'envoi authentifié et une politique de confidentialité adaptée. Ne jamais envoyer de données médicales dans les e-mails d'authentification.
+
+## Interface multilingue : français, anglais, arabe
+
+Une option de langue est disponible dans l’en-tête de la page d’accueil, dans l’espace personnel, dans la fenêtre de connexion et sur la page auteur :
+
+- **Français** (`fr`, langue par défaut).
+- **English** (`en`).
+- **العربية** (`ar`, mise en page de droite à gauche, `dir="rtl"`).
+
+La préférence est enregistrée localement dans le navigateur (`localStorage`, clé `pemesa.language`). Le titre de page, les textes de l’interface, les principaux messages de connexion et les dates du tableau de bord s’adaptent au choix. La logique des comptes Supabase, les données sauvegardées et le domaine ne sont pas modifiés. Les traductions sont dans `i18n.js` ; les ajustements de mise en page dans `language.css`.
+
+**Limite :** le sélecteur traduit l'interface web, **pas** automatiquement les e-mails d’authentification Supabase. Les modèles d’e-mails gérés dans Supabase conservent leur langue configurée tant qu’aucune logique d’envoi multilingue n’est mise en place. Vérifier le rendu sur mobile et les champs de données saisis manuellement avant une mise en production destinée à des participants.
