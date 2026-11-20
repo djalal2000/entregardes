@@ -47,7 +47,7 @@ Ne jamais inclure de clé `service_role` ou secrète dans un fichier web public.
 ## Architecture
 
 - `index.html` : site de présentation + espace de démonstration + fenêtre de connexion.
-- `style-v3.css` : styles actifs de la nouvelle identité.
+- `style-v5.css` : styles actifs de la nouvelle identité.
 - `app-v3.js` : logique active du planning, du suivi et des analyses.
 - `config.js` : configuration publique Supabase (vide par défaut).
 - `supabase/schema.sql` : schéma des données par utilisateur et politiques RLS.
@@ -71,3 +71,7 @@ Pour demander l'indexation :
 6. Surveiller la rubrique **Indexation des pages** et rechercher `site:pemesa.shiftcare.me` sur Google pour vérifier la présence éventuelle du site.
 
 Google décide seul du moment et du classement de l'indexation ; aucune position sur le mot-clé « pemesa » n'est garantie. Ne modifiez pas `CNAME` pour cette démarche.
+
+## Identité visuelle
+
+Le fichier `assets/pemesa-logo-transparent.png` est une version optimisée pour le web du logo PEMESA à fond transparent transmis par le propriétaire. Il est utilisé sur la page d’accueil, la navigation, le prototype, la page de profil et comme favicon. Le dessin et l'inscription du logo fourni sont conservés. Le fichier antérieur `assets/pemesa-logo.webp` est conservé pour l’historique, mais n’est plus référencé par les pages HTML actives.
