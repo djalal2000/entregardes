@@ -45,7 +45,7 @@
   const random=new Float32Array(attrSize);
   let ptr=0;
   for(let i=0;i<count;i++){
-    const id=(i+.5)/count,v=hash(i+3),w=(mobile?.009:.006)*(.65+hash(i*3)*1.2);
+    const id=(i+.5)/count,v=hash(i+3),w=(mobile?.0058:.0037)*(.75+hash(i*3)*.95);
     for(let j=0;j<=segments;j++){
       const t=j/segments;
       for(let k=0;k<2;k++){
@@ -132,16 +132,16 @@
       uniform float uRing,uStream,uLight,uFade,uReveal,uTip;
       varying float vT,vDepth,vVariation;
       void main(){
-        float shade=clamp(.61+.21*vDepth+.14*sin(vVariation*17.),.32,.94);
-        float detail=.83+.12*sin(vT*56.+vVariation*20.);
-        vec3 white=vec3(.89,.85,.84)*shade*detail;
-        vec3 gray=vec3(.51,.49,.50)*shade;
-        vec3 color=mix(gray,white,clamp(.43+vVariation*.57,0.,1.));
+        float shade=clamp(.76+.10*vDepth+.07*sin(vVariation*17.),.52,.99);
+        float detail=.96+.045*sin(vT*56.+vVariation*20.);
+        vec3 white=vec3(1.0,.98,.956)*shade*detail;
+        vec3 gray=vec3(.78,.755,.745)*shade;
+        vec3 color=mix(gray,white,clamp(.72+vVariation*.22,0.,1.));
         float tip=smoothstep(.84,.985,vT)*max(uStream,uTip);
         color=mix(color,vec3(1.,.31,.055)*(1.+uLight*.21),tip*.98);
         color+=vec3(.035,.028,.026)*uRing;
         float reveal=smoothstep(-.17,.025,uReveal-(vVariation*.69+vT*.31));
-        gl_FragColor=vec4(color,clamp((.8+vDepth*.08)*uFade*reveal,0.,1.));
+        gl_FragColor=vec4(color,clamp((.53+vDepth*.12)*uFade*reveal,0.,.81));
       }
     `
   }));
@@ -232,108 +232,16 @@
   stage.add(dust);
 
 
-  // Stage 01 requires a real shaded portrait, not just the earlier wireframe
-  // stand-in. A CC BY 3.0 Lee Perry-Smith head scan loads independently;
-  // a self-contained sculptural face remains visible if a CDN is unavailable.
-  const portrait=new THREE.Group();
-  stage.add(portrait);
-  const portraitMaterials=[];
-  function portraitMaterial(hex,roughness=.83){
-    const m=new THREE.MeshStandardMaterial({
-      color:hex,roughness,metalness:0,transparent:true,opacity:1,
-      depthWrite:true,side:THREE.FrontSide
+  // A licensed natural portrait is displayed in the DOM behind this scene.
+  // WebGL intentionally renders only its evolving fibers; no distorted bust.
+  const photo=document.getElementById('pemesa-portrait-photo');
+  if(photo){
+    let backup=false;
+    photo.addEventListener('error',()=>{
+      if(!backup){backup=true;photo.src='https://images.pexels.com/photos/6337501/pexels-photo-6337501.jpeg?auto=compress&cs=tinysrgb&w=1100'}
+      else {photo.classList.add('cinematic-portrait-unavailable');}
     });
-    portraitMaterials.push(m);return m;
   }
-  const skin=portraitMaterial('#be8c73');
-  const hair=portraitMaterial('#232027',.96);
-  const eyeWhite=portraitMaterial('#f6e8dd',.66);
-  const eyeBrown=portraitMaterial('#28252b',.48);
-  const lip=portraitMaterial('#81564f');
-  const fallbackFace=new THREE.Group();
-  portrait.add(fallbackFace);
-  function ellipsoid(parent,material,x,y,z,sx,sy,sz){
-    const m=new THREE.Mesh(new THREE.SphereGeometry(1,28,20),material);
-    m.position.set(x,y,z);m.scale.set(sx,sy,sz);
-    parent.add(m);return m;
-  }
-  ellipsoid(fallbackFace,skin,0,.07,0,.79,1.15,.72);
-  ellipsoid(fallbackFace,skin,-.81,-.07,0,.17,.27,.14);
-  ellipsoid(fallbackFace,skin,.81,-.07,0,.17,.27,.14);
-  ellipsoid(fallbackFace,hair,0,1.0,-.10,.82,.39,.70);
-  ellipsoid(fallbackFace,hair,0,-.80,.22,.54,.25,.48);
-  ellipsoid(fallbackFace,skin,0,-.02,.66,.145,.27,.20);
-  ellipsoid(fallbackFace,lip,0,-.40,.685,.22,.038,.06);
-  for(const x of [-.285,.285]){
-    ellipsoid(fallbackFace,eyeWhite,x,.31,.655,.12,.082,.055);
-    ellipsoid(fallbackFace,eyeBrown,x,.31,.711,.042,.048,.016);
-    ellipsoid(fallbackFace,hair,x,.46,.65,.15,.034,.056);
-  }
-  // Small irregular curls give the emergency portrait some surface detail.
-  const curlGeo=new THREE.SphereGeometry(1,8,6);
-  const curls=new THREE.InstancedMesh(curlGeo,hair,115);
-  const helper=new THREE.Object3D();
-  for(let i=0;i<115;i++){
-    const a=hash(i*17+12)*tau;
-    const latitude=.20+hash(i*23+9)*1.36;
-    const rr=.79*Math.cos(latitude);
-    const yy=.25+.96*Math.sin(latitude);
-    const zz=.72*Math.cos(latitude);
-    helper.position.set(rr*Math.sin(a),yy,zz*Math.cos(a)-.08);
-    const rad=.055+hash(i*11+3)*.056;
-    helper.scale.set(rad,rad,rad);
-    helper.updateMatrix();curls.setMatrixAt(i,helper.matrix);
-  }
-  fallbackFace.add(curls);
-
-  const ambient=new THREE.HemisphereLight(0xfff6f0,0xb6a6a0,2.05);
-  const keyLight=new THREE.DirectionalLight(0xffe5d1,3.1);
-  keyLight.position.set(2.4,3.2,5.5);
-  const fillLight=new THREE.DirectionalLight(0xc2d7e8,1.1);
-  fillLight.position.set(-3.2,.5,1.0);
-  const rimLight=new THREE.DirectionalLight(0xffb380,1.5);
-  rimLight.position.set(1.5,2,-4);
-  scene.add(ambient,keyLight,fillLight,rimLight);
-
-  // No claim of photorealism when loading fails. The external scan is
-  // credited in the footer and in the repository documentation.
-  let scanReady=false;
-  (async()=>{
-    try{
-      const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
-      const loader=new GLTFLoader();
-      const scan=await loader.loadAsync(
-        'https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb'
-      );
-      const tex=await new THREE.TextureLoader().loadAsync(
-        'https://threejs.org/examples/models/gltf/LeePerrySmith/Map-COL.jpg'
-      );
-      tex.colorSpace=THREE.SRGBColorSpace;
-      tex.flipY=false;
-      const scanBox=new THREE.Box3().setFromObject(scan.scene);
-      const scanSize=scanBox.getSize(new THREE.Vector3());
-      const scanCenter=scanBox.getCenter(new THREE.Vector3());
-      if(!Number.isFinite(scanSize.y)||scanSize.y<=0)throw Error('Modèle 3D invalide.');
-      const scanRoot=new THREE.Group();
-      scan.scene.position.sub(scanCenter);
-      scanRoot.scale.setScalar(2.65/scanSize.y);
-      scanRoot.add(scan.scene);
-      const scanMaterial=new THREE.MeshStandardMaterial({
-        map:tex,color:0xffffff,metalness:0,roughness:.82,
-        transparent:true,opacity:1,depthWrite:true,side:THREE.FrontSide
-      });
-      scan.scene.traverse(node=>{if(node.isMesh)node.material=scanMaterial});
-      portraitMaterials.push(scanMaterial);
-      portrait.add(scanRoot);
-      fallbackFace.visible=false;
-      scanReady=true;
-      document.documentElement.dataset.cinematicPortrait='scan';
-    }catch(err){
-      console.warn('Portrait 3D : modèle distant indisponible, portrait de secours conservé.',err);
-      document.documentElement.dataset.cinematicPortrait='fallback';
-    }
-  })();
-
 
   // Warm glow inside the final knitted ring, independent of postprocessing
   // so it remains lightweight on phones and does not affect site UI elements.
@@ -384,15 +292,15 @@
       f.camZ=5.25+.04*Math.sin(v*.6);
     }else if(v<10.9){
       const a=smooth((v-5.2)/5.7);
-      f.id=1;f.head=1;f.portrait=1-.73*a;
-      f.wire=a;f.reveal=.025+a*1.1;
+      f.id=1;f.head=1;f.portrait=1-smooth((a-.20)/.67);
+      f.wire=.10+.74*a;f.reveal=.06+a*1.15;
       f.particles=.24*a;f.yaw=-.08+1.18*a;
       f.pitch=-.08-.18*a;f.roll=-.05*a;
       f.camZ=5.25+1.22*a;f.camX=.05*a;
     }else if(v<16.9){
       const a=smooth((v-10.9)/6);
       f.id=2;f.head=1-.26*a;f.stream=.26*a;
-      f.portrait=.27*(1-a);f.wire=1;f.reveal=1.4;
+      f.portrait=0;f.wire=.84+.16*a;f.reveal=1.4;
       f.tip=.08+.72*a;f.particles=.30+.55*a;
       f.yaw=1.10+2.15*a;f.pitch=-.26+.16*a;
       f.roll=-.05+.13*a;f.camZ=6.47-.18*a;
@@ -447,10 +355,10 @@
     stage.rotation.x=f.pitch+py*.045;
     stage.rotation.z=f.roll;
     stage.scale.setScalar(f.scale);
-    portrait.visible=f.portrait>.003;
-    for(const mat of portraitMaterials){
-      mat.opacity=f.portrait;
-      mat.depthWrite=f.portrait>.985;
+    if(photo){
+      photo.style.opacity=String(Math.max(0,Math.min(1,f.portrait)));
+      const turn=Math.max(-.08,Math.min(.55,f.yaw*.3));
+      photo.style.transform='translate3d(0,0,0) perspective(1100px) rotateY('+turn+'rad) scale('+(1.03+.035*f.wire)+')';
     }
     core.visible=f.glow>.025;
     halo.visible=f.glow>.025;
