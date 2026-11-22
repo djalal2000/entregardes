@@ -47,3 +47,6 @@ html[dir=rtl] #site #pemesa-scroll-experience .pm-scroll-gradient{transform:scal
 html[dir=rtl] #site #pemesa-scroll-experience .pm-story-footer{direction:rtl}
 @media(max-width:600px){html[dir=rtl] #site #pemesa-scroll-experience .pm-chapter{right:20px;left:auto}}
 @media(prefers-reduced-motion:reduce){#site #pemesa-scroll-experience .pm-fallback-art::before{animation:none}#site #pemesa-scroll-experience .pm-scroll-loader{transition:none}#site #pemesa-scroll-experience .pm-chapter{will-change:auto}}
+
+#site #pemesa-scroll-experience canvas{visibility:hidden}
+#site #pemesa-scroll-experience.pm-frames-ready canvas{visibility:visible}
