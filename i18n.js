@@ -847,6 +847,344 @@
     "Choisissez une langue valide.": { en: "Choose a valid language.", ar: "اختر لغة صالحة." },
     "La langue a été modifiée sur cet appareil, mais sa sauvegarde sur le compte a échoué.": { en: "The language changed on this device, but could not be saved to your account.", ar: "تم تغيير اللغة على هذا الجهاز، لكن تعذّر حفظها في حسابك." },
   });
+  Object.assign(entries, {
+  "Montres connectées": {
+    "en": "Connected watches",
+    "ar": "الساعات المتصلة"
+  },
+  "Associez votre Galaxy Watch et pilotez la collecte de données.": {
+    "en": "Pair your Galaxy Watch and manage data collection.",
+    "ar": "اربط ساعة Galaxy Watch وتحكّم في جمع البيانات."
+  },
+  "Votre montre, sous votre contrôle.": {
+    "en": "Your watch, under your control.",
+    "ar": "ساعتك تحت سيطرتك."
+  },
+  "Associez une Galaxy Watch compatible Wear OS, définissez vos mesures autorisées et pilotez la collecte depuis PEMESA.": {
+    "en": "Pair a compatible Wear OS Galaxy Watch, choose which measurements to allow, and control collection from PEMESA.",
+    "ar": "اربط ساعة Galaxy Watch متوافقة مع Wear OS، وحدد القياسات المسموح بها وتحكّم في جمع البيانات من PEMESA."
+  },
+  "Accès sécurisé": {
+    "en": "Secure access",
+    "ar": "وصول آمن"
+  },
+  "État en direct": {
+    "en": "Live status",
+    "ar": "الحالة المباشرة"
+  },
+  "Consentement maîtrisé": {
+    "en": "Consent control",
+    "ar": "التحكم في الموافقة"
+  },
+  "Connectez-vous pour associer votre montre.": {
+    "en": "Sign in to pair your watch.",
+    "ar": "سجّل الدخول لربط ساعتك."
+  },
+  "Cette fonctionnalité est réservée aux comptes personnels. Le mode démo ne collecte aucune donnée de montre.": {
+    "en": "This feature requires a personal account. Demo mode collects no watch data.",
+    "ar": "هذه الميزة مخصصة للحسابات الشخصية. الوضع التجريبي لا يجمع أي بيانات من الساعة."
+  },
+  "Se connecter à PEMESA": {
+    "en": "Sign in to PEMESA",
+    "ar": "تسجيل الدخول إلى PEMESA"
+  },
+  "Montres associées": {
+    "en": "Paired watches",
+    "ar": "الساعات المرتبطة"
+  },
+  "Sur votre compte personnel": {
+    "en": "On your personal account",
+    "ar": "في حسابك الشخصي"
+  },
+  "Montres en ligne": {
+    "en": "Online watches",
+    "ar": "الساعات المتصلة"
+  },
+  "Contact il y a moins de 2 min": {
+    "en": "Contact within the past 2 min",
+    "ar": "آخر اتصال منذ أقل من دقيقتين"
+  },
+  "Collecte confirmée": {
+    "en": "Confirmed collection",
+    "ar": "الجمع المؤكد"
+  },
+  "Signal renvoyé par l'application mobile": {
+    "en": "Status reported by the mobile app",
+    "ar": "الحالة المرسلة من تطبيق الهاتف"
+  },
+  "Collecte arrêtée": {
+    "en": "Collection stopped",
+    "ar": "تم إيقاف الجمع"
+  },
+  "Collecte active": {
+    "en": "Collection active",
+    "ar": "الجمع نشط"
+  },
+  "Collecte en pause": {
+    "en": "Collection paused",
+    "ar": "الجمع متوقف مؤقتًا"
+  },
+  "Non configurée": {
+    "en": "Not configured",
+    "ar": "غير مهيأ"
+  },
+  "Inconnu": {
+    "en": "Unknown",
+    "ar": "غير معروف"
+  },
+  "Mes appareils": {
+    "en": "My devices",
+    "ar": "أجهزتي"
+  },
+  "Associez une montre à votre téléphone Android et à l'application PEMESA.": {
+    "en": "Pair a watch with your Android phone and the PEMESA app.",
+    "ar": "اربط الساعة بهاتف أندرويد وتطبيق PEMESA."
+  },
+  "Actualiser": {
+    "en": "Refresh",
+    "ar": "تحديث"
+  },
+  "En ligne": {
+    "en": "Online",
+    "ar": "متصل"
+  },
+  "Hors ligne": {
+    "en": "Offline",
+    "ar": "غير متصل"
+  },
+  "Aucune montre associée": {
+    "en": "No watch paired",
+    "ar": "لا توجد ساعة مرتبطة"
+  },
+  "Créez un code puis saisissez-le dans l'application Android PEMESA.": {
+    "en": "Create a code and enter it in the PEMESA Android app.",
+    "ar": "أنشئ رمزًا وأدخله في تطبيق PEMESA على أندرويد."
+  },
+  "Code d’association temporaire": {
+    "en": "Temporary pairing code",
+    "ar": "رمز الربط المؤقت"
+  },
+  "Valable jusqu’au": {
+    "en": "Valid until",
+    "ar": "صالح حتى"
+  },
+  "Copier": {
+    "en": "Copy",
+    "ar": "نسخ"
+  },
+  "Annuler": {
+    "en": "Cancel",
+    "ar": "إلغاء"
+  },
+  "Associer une Galaxy Watch": {
+    "en": "Pair a Galaxy Watch",
+    "ar": "ربط ساعة Galaxy Watch"
+  },
+  "L'association n'est confirmée que lorsque l'application Android PEMESA a accepté le code et déclaré la montre.": {
+    "en": "Pairing is confirmed only after the PEMESA Android app accepts the code and registers the watch.",
+    "ar": "لا يكتمل الربط إلا بعد قبول الرمز وتسجيل الساعة في تطبيق PEMESA على أندرويد."
+  },
+  "Contrôle de la collecte": {
+    "en": "Collection controls",
+    "ar": "التحكم في الجمع"
+  },
+  "commandes transmises au téléphone": {
+    "en": "commands sent to the phone",
+    "ar": "الأوامر المرسلة إلى الهاتف"
+  },
+  "Batterie": {
+    "en": "Battery",
+    "ar": "البطارية"
+  },
+  "Dernier contact": {
+    "en": "Last contact",
+    "ar": "آخر اتصال"
+  },
+  "Dernier transfert": {
+    "en": "Last transfer",
+    "ar": "آخر نقل"
+  },
+  "Mesures déclarées": {
+    "en": "Reported measurements",
+    "ar": "القياسات المبلّغ عنها"
+  },
+  "Démarrer": {
+    "en": "Start",
+    "ar": "بدء"
+  },
+  "Arrêter": {
+    "en": "Stop",
+    "ar": "إيقاف"
+  },
+  "Pause": {
+    "en": "Pause",
+    "ar": "إيقاف مؤقت"
+  },
+  "Les commandes sont des demandes. L'état change seulement lorsque la montre confirme leur exécution via l'application mobile.": {
+    "en": "Commands are requests. The status changes only once the watch confirms execution through the mobile app.",
+    "ar": "الأوامر طلبات فقط. تتغير الحالة بعد تأكيد التنفيذ عبر تطبيق الهاتف."
+  },
+  "Dernière commande": {
+    "en": "Latest command",
+    "ar": "آخر أمر"
+  },
+  "Démarrage": {
+    "en": "Start",
+    "ar": "بدء"
+  },
+  "Arrêt": {
+    "en": "Stop",
+    "ar": "إيقاف"
+  },
+  "En attente de la montre": {
+    "en": "Awaiting watch",
+    "ar": "في انتظار الساعة"
+  },
+  "Confirmée par la montre": {
+    "en": "Confirmed by watch",
+    "ar": "تم التأكيد من الساعة"
+  },
+  "Échec signalé par la montre": {
+    "en": "Watch reported failure",
+    "ar": "أبلغت الساعة عن فشل"
+  },
+  "Capteurs et autorisations": {
+    "en": "Sensors and permissions",
+    "ar": "المستشعرات والأذونات"
+  },
+  "Choisissez les données demandées à l'application. Leur disponibilité dépend du modèle et des permissions Android.": {
+    "en": "Choose the data requested by the app. Availability depends on your model and Android permissions.",
+    "ar": "اختر البيانات المطلوبة. يعتمد توفرها على طراز الساعة وأذونات أندرويد."
+  },
+  "Fréquence cardiaque": {
+    "en": "Heart rate",
+    "ar": "معدل ضربات القلب"
+  },
+  "Nombre de pas": {
+    "en": "Step count",
+    "ar": "عدد الخطوات"
+  },
+  "Activité physique": {
+    "en": "Physical activity",
+    "ar": "النشاط البدني"
+  },
+  "Sommeil": {
+    "en": "Sleep",
+    "ar": "النوم"
+  },
+  "J’autorise la collecte des catégories sélectionnées pour mon compte PEMESA. Je peux retirer cette autorisation à tout moment.": {
+    "en": "I allow collection of the selected categories for my PEMESA account. I can withdraw this permission at any time.",
+    "ar": "أوافق على جمع الفئات المحددة لحسابي في PEMESA. يمكنني سحب هذه الموافقة في أي وقت."
+  },
+  "Enregistrer les autorisations": {
+    "en": "Save permissions",
+    "ar": "حفظ الأذونات"
+  },
+  "Dissocier la montre": {
+    "en": "Unpair watch",
+    "ar": "إلغاء ربط الساعة"
+  },
+  "Ce module ne conserve pas les mesures physiologiques brutes. Toute collecte de santé destinée à la recherche nécessite un cadre de sécurité et de conformité adapté.": {
+    "en": "This module does not store raw physiological measurements. Health research data requires appropriate security and compliance.",
+    "ar": "لا تخزّن هذه الوحدة القياسات الفسيولوجية الخام. يتطلب جمع بيانات الصحة للبحث إطارًا مناسبًا للأمان والامتثال."
+  },
+  "GUIDE D’ASSOCIATION": {
+    "en": "PAIRING GUIDE",
+    "ar": "دليل الربط"
+  },
+  "Connecter votre Galaxy Watch": {
+    "en": "Connect your Galaxy Watch",
+    "ar": "اتصال ساعة Galaxy Watch"
+  },
+  "Associer la montre au téléphone": {
+    "en": "Pair the watch with your phone",
+    "ar": "ربط الساعة بالهاتف"
+  },
+  "Vérifiez sa connexion dans l'application Samsung Galaxy Wearable.": {
+    "en": "Check its connection in the Samsung Galaxy Wearable app.",
+    "ar": "تحقق من اتصالها في تطبيق Samsung Galaxy Wearable."
+  },
+  "Ouvrir PEMESA sur Android": {
+    "en": "Open PEMESA on Android",
+    "ar": "افتح PEMESA على أندرويد"
+  },
+  "Connectez-vous au même compte et accordez les permissions nécessaires.": {
+    "en": "Sign in to the same account and grant the required permissions.",
+    "ar": "سجّل الدخول بالحساب نفسه وامنح الأذونات المطلوبة."
+  },
+  "Valider le code à 6 chiffres": {
+    "en": "Enter the 6-digit code",
+    "ar": "أدخل الرمز المكوّن من 6 أرقام"
+  },
+  "Dans l'application, entrez le code temporaire créé ici.": {
+    "en": "In the app, enter the temporary code created here.",
+    "ar": "أدخل في التطبيق الرمز المؤقت الذي تم إنشاؤه هنا."
+  },
+  "Vérifier le retour de la montre": {
+    "en": "Check watch status",
+    "ar": "تحقق من حالة الساعة"
+  },
+  "Son état s'affiche ici après synchronisation.": {
+    "en": "Its status will appear here after synchronization.",
+    "ar": "ستظهر حالتها هنا بعد المزامنة."
+  },
+  "APPLICATION NÉCESSAIRE": {
+    "en": "APP REQUIRED",
+    "ar": "التطبيق مطلوب"
+  },
+  "Connecteur mobile requis": {
+    "en": "Mobile connector required",
+    "ar": "يلزم موصل للهاتف"
+  },
+  "Les écrans, la base sécurisée et les commandes sont prêts. Le connecteur de l'application Android/Wear OS doit encore être relié à cette API pour lire les capteurs et exécuter les commandes.": {
+    "en": "The dashboard, secure database, and commands are ready. The Android/Wear OS app connector must still be integrated with this API to read sensors and execute commands.",
+    "ar": "لوحة التحكم وقاعدة البيانات الآمنة والأوامر جاهزة. لا يزال يتعين ربط تطبيق أندرويد وWear OS بواجهة البرمجة لقراءة المستشعرات وتنفيذ الأوامر."
+  },
+  "Code copié.": {
+    "en": "Code copied.",
+    "ar": "تم نسخ الرمز."
+  },
+  "Association annulée.": {
+    "en": "Pairing cancelled.",
+    "ar": "تم إلغاء الربط."
+  },
+  "Montre dissociée du compte.": {
+    "en": "Watch removed from account.",
+    "ar": "تم إلغاء ربط الساعة بالحساب."
+  },
+  "État actualisé.": {
+    "en": "Status refreshed.",
+    "ar": "تم تحديث الحالة."
+  },
+  "Autorisations de collecte enregistrées.": {
+    "en": "Collection permissions saved.",
+    "ar": "تم حفظ أذونات الجمع."
+  },
+  "Autorisation retirée. Demande d’arrêt transmise, en attente de confirmation.": {
+    "en": "Permission withdrawn. Stop request sent; awaiting confirmation.",
+    "ar": "تم سحب الإذن وإرسال طلب الإيقاف، بانتظار التأكيد."
+  },
+  "Commande enregistrée. Attente de confirmation par l’application mobile.": {
+    "en": "Command queued. Awaiting confirmation from the mobile app.",
+    "ar": "تم تسجيل الأمر. بانتظار تأكيد تطبيق الهاتف."
+  },
+  "Code créé. Saisissez-le dans l’application Android PEMESA connectée au même compte.": {
+    "en": "Code created. Enter it in the Android PEMESA app signed into the same account.",
+    "ar": "تم إنشاء الرمز. أدخله في تطبيق PEMESA على أندرويد المتصل بالحساب نفسه."
+  },
+  "Sélectionnez au moins une catégorie de données.": {
+    "en": "Select at least one data category.",
+    "ar": "حدد فئة بيانات واحدة على الأقل."
+  },
+  "Autorisez la collecte et vérifiez que la montre est en ligne.": {
+    "en": "Allow collection and make sure the watch is online.",
+    "ar": "اسمح بجمع البيانات وتأكد من اتصال الساعة."
+  },
+  "La collecte doit être active et la montre en ligne.": {
+    "en": "Collection must be active and the watch online.",
+    "ar": "يجب أن يكون جمع البيانات نشطًا والساعة متصلة."
+  }
+});
   const localeTags={fr:'fr-FR',en:'en-GB',ar:'ar'};
   const supported=['fr','en','ar'];
   const storageKey='pemesa.language';
