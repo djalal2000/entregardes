@@ -811,7 +811,34 @@
     "ar": "تطوير نموذج الويب الأولي:"
   }
 };
-  const localeTags={fr:'fr-FR',en:'en-GB',ar:'ar'};
+  Object.assign(entries, {\n  "Paramètres du compte": { "en": "Account settings", "ar": "إعدادات الحساب" },
+  "MON ESPACE": { "en": "MY ACCOUNT", "ar": "حسابي" },
+  "Personnalisez vos informations et sécurisez votre compte.": { "en": "Personalize your information and secure your account.", "ar": "خصّص معلوماتك وأمّن حسابك." },
+  "Photo de profil": { "en": "Profile picture", "ar": "الصورة الشخصية" },
+  "JPG, PNG ou WebP — 2 Mo maximum.": { "en": "JPG, PNG or WebP — maximum 2 MB.", "ar": "JPG أو PNG أو WebP — بحد أقصى 2 ميغابايت." },
+  "Voir ou changer la photo": { "en": "View or change photo", "ar": "عرض الصورة أو تغييرها" },
+  "Informations personnelles": { "en": "Personal information", "ar": "المعلومات الشخصية" },
+  "Nom complet": { "en": "Full name", "ar": "الاسم الكامل" },
+  "Date de naissance": { "en": "Date of birth", "ar": "تاريخ الميلاد" },
+  "Téléphone": { "en": "Phone number", "ar": "رقم الهاتف" },
+  "Profession": { "en": "Profession", "ar": "المهنة" },
+  "Enregistrer les modifications": { "en": "Save changes", "ar": "حفظ التغييرات" },
+  "Nouvelle adresse e-mail": { "en": "New email address", "ar": "البريد الإلكتروني الجديد" },
+  "Un e-mail de confirmation peut être nécessaire.": { "en": "Email confirmation may be required.", "ar": "قد يلزم تأكيد البريد الإلكتروني." },
+  "Modifier mon e-mail": { "en": "Change my email", "ar": "تغيير بريدي الإلكتروني" },
+  "Mot de passe et sécurité": { "en": "Password and security", "ar": "كلمة المرور والأمان" },
+  "Mot de passe actuel": { "en": "Current password", "ar": "كلمة المرور الحالية" },
+  "Nouveau mot de passe": { "en": "New password", "ar": "كلمة المرور الجديدة" },
+  "Confirmer le nouveau mot de passe": { "en": "Confirm new password", "ar": "تأكيد كلمة المرور الجديدة" },
+  "Changer le mot de passe": { "en": "Change password", "ar": "تغيير كلمة المرور" },
+  "Ma photo de profil": { "en": "My profile picture", "ar": "صورتي الشخصية" },
+  "Visualiser la photo": { "en": "View photo", "ar": "عرض الصورة" },
+  "Changer la photo": { "en": "Change photo", "ar": "تغيير الصورة" },
+  "Supprimer la photo": { "en": "Remove photo", "ar": "حذف الصورة" },
+  "Photo de profil enregistrée.": { "en": "Profile photo saved.", "ar": "تم حفظ الصورة الشخصية." },
+  "Photo de profil supprimée.": { "en": "Profile photo removed.", "ar": "تم حذف الصورة الشخصية." },
+  "Informations personnelles enregistrées.": { "en": "Personal information saved.", "ar": "تم حفظ المعلومات الشخصية." },
+  "Mot de passe modifié avec succès.": { "en": "Password changed successfully.", "ar": "تم تغيير كلمة المرور بنجاح." },\n  });\n  const localeTags={fr:'fr-FR',en:'en-GB',ar:'ar'};
   const supported=['fr','en','ar'];
   const storageKey='pemesa.language';
   let current='fr';
