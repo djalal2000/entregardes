@@ -215,7 +215,7 @@
         gl_Position=projectionMatrix*mv;
         gl_PointSize=clamp(aSize*8.0/(-mv.z),.8,7.);
         vGold=step(.65,aId);
-        vAlpha=.18+.52*uPower;
+        vAlpha=clamp(uPower,0.,1.)*(.28+.42*step(.65,aId));
       }
     `,
     fragmentShader:`
@@ -336,30 +336,123 @@
 
   let w=0,h=0,frame=0,last=0,seconds=0,running=false,visible=true;
   let px=0,py=0,tx=0,ty=0;
+
+  // Storyboard derived from the six supplied reference frames.
+  // 01 portrait; 02 face-to-filaments; 03 rear head; 04 emergence;
+  // 05 diagonal cables; 06 torus with a molten center and reset.
+  const duration=39;
+  const labels={
+    fr:['Portrait','Métamorphose du visage','Rotation et maillage','Émergence des fibres','Filaments lumineux','Anneau organique'],
+    en:['Portrait','Face to fiber mesh','Head rotation','Emerging fibers','Glowing strands','Organic torus'],
+    ar:['صورة الوجه','تحول الوجه إلى خيوط','دوران الرأس','ظهور الألياف','خيوط مضيئة','حلقة عضوية']
+  };
+  let previousScene=-1;
+  function frameAt(seconds){
+    const v=((seconds%duration)+duration)%duration;
+    const f={
+      id:0,portrait:1,head:1,ring:0,stream:0,
+      wire:0,reveal:1,tip:0,particles:0,glow:0,
+      yaw:0,pitch:0,roll:0,camZ:5.3,camX:0,camY:.05,scale:1
+    };
+    if(v<5.2){
+      // Portrait still and luminous; only a subtle breathing camera drift.
+      f.id=0;
+      f.yaw=-.08+Math.sin(v*.3)*.023;
+      f.camZ=5.25+.04*Math.sin(v*.6);
+    }else if(v<10.9){
+      const a=smooth((v-5.2)/5.7);
+      f.id=1;f.head=1;f.portrait=1-.73*a;
+      f.wire=a;f.reveal=.025+a*1.1;
+      f.particles=.24*a;f.yaw=-.08+1.18*a;
+      f.pitch=-.08-.18*a;f.roll=-.05*a;
+      f.camZ=5.25+1.22*a;f.camX=.05*a;
+    }else if(v<16.9){
+      const a=smooth((v-10.9)/6);
+      f.id=2;f.head=1-.26*a;f.stream=.26*a;
+      f.portrait=.27*(1-a);f.wire=1;f.reveal=1.4;
+      f.tip=.08+.72*a;f.particles=.30+.55*a;
+      f.yaw=1.10+2.15*a;f.pitch=-.26+.16*a;
+      f.roll=-.05+.13*a;f.camZ=6.47-.18*a;
+    }else if(v<22.1){
+      const a=smooth((v-16.9)/5.2);
+      f.id=3;f.head=.74*(1-a);f.stream=.26+.74*a;
+      f.portrait=0;f.wire=1;f.reveal=1.4;
+      f.tip=.80+.20*a;f.particles=.85;
+      f.yaw=3.25-2.90*a;f.pitch=-.10+.27*a;
+      f.roll=.08-.28*a;f.camZ=6.29-1.0*a;
+      f.camX=.06+.38*a;f.camY=.05-.23*a;
+    }else if(v<28.1){
+      const a=smooth((v-22.1)/6);
+      f.id=4;f.head=0;f.stream=1;
+      f.portrait=0;f.wire=1;f.reveal=1.4;
+      f.tip=1;f.particles=.85-.18*a;
+      f.yaw=.35-.19*a;f.pitch=.17-.04*a;
+      f.roll=-.20+.10*a;f.camZ=5.29-.85*a;
+      f.camX=.44+.25*a;f.camY=-.18-.08*a;
+    }else if(v<35.1){
+      const a=smooth((v-28.1)/2.5);
+      const hold=smooth((v-30.6)/4.5);
+      f.id=5;f.head=0;f.stream=1-a;f.ring=a;
+      f.portrait=0;f.wire=1;f.reveal=1.4;
+      f.tip=1-a;f.particles=.67+.27*a;
+      f.glow=a*(.84+.16*Math.sin(v*1.9));
+      f.yaw=.16+.50*hold;f.pitch=.13+.1*hold;
+      f.roll=-.10+.10*hold;f.camZ=4.44+1.33*a;
+      f.camX=.69*(1-a);f.camY=-.26*(1-a);
+      f.scale=1+.055*a;
+    }else{
+      // Invisible seam: a short return to the initial portrait closes the loop.
+      const a=smooth((v-35.1)/3.9);
+      const b=smooth((a-.35)/.65);
+      f.id=5;f.ring=1-a;f.head=a*(1-b);f.stream=0;
+      f.portrait=b;f.wire=1-b;f.reveal=1.4;
+      f.tip=0;f.glow=(1-a)*.88;f.particles=(1-a)*.82;
+      f.yaw=.66*(1-a)-.08*a;f.pitch=.22*(1-a);
+      f.roll=0;f.camZ=5.77-.52*a;
+    }
+    return f;
+  }
+  function updateScene(){
+    const f=frameAt(reduced.matches?32:seconds);
+    const time=reduced.matches?32:seconds;
+    u.uTime.value=time;u.uHead.value=f.head;u.uRing.value=f.ring;
+    u.uStream.value=f.stream;u.uFade.value=f.wire;
+    u.uReveal.value=f.reveal;u.uTip.value=f.tip;
+    u.uMotion.value=reduced.matches?0:1;u.uLight.value=f.glow;
+    px+=(tx-px)*.032;py+=(ty-py)*.032;
+    stage.rotation.y=f.yaw+px*.065;
+    stage.rotation.x=f.pitch+py*.045;
+    stage.rotation.z=f.roll;
+    stage.scale.setScalar(f.scale);
+    portrait.visible=f.portrait>.003;
+    for(const mat of portraitMaterials){
+      mat.opacity=f.portrait;
+      mat.depthWrite=f.portrait>.985;
+    }
+    core.visible=f.glow>.025;
+    halo.visible=f.glow>.025;
+    core.scale.setScalar(.86+.22*Math.sin(time*1.6));
+    coreU.uTime.value=time;coreU.uPower.value=f.glow;
+    halo.scale.setScalar(1.18+.15*Math.sin(time*1.3));
+    dustU.uTime.value=time;
+    dustU.uShape.value=f.ring;
+    dustU.uPower.value=f.particles;
+    dust.rotation.y=-time*.055;
+    camera.position.set(f.camX,f.camY,f.camZ);
+    camera.lookAt(0,0,0);
+    if(previousScene!==f.id){
+      previousScene=f.id;
+      const lang=window.PEMESA_I18N?.language||'fr';
+      const captions=labels[lang]||labels.fr;
+      const target=document.querySelector('.cinematic-visual-caption');
+      if(target)target.textContent=String(f.id+1).padStart(2,'0')+' / 06 — '+captions[f.id];
+      const index=document.querySelector('.cinematic-side-index span:first-child');
+      if(index)index.textContent=String(f.id+1).padStart(2,'0');
+      document.documentElement.dataset.cinematicScene=String(f.id+1);
+    }
+  }
   function render(){
-    const phase=fract(seconds/29);
-    let head=0,ring=0,stream=0,light=0;
-    if(phase<.17){head=1}
-    else if(phase<.34){const x=smooth((phase-.17)/.17);head=1-x;ring=x;light=x}
-    else if(phase<.56){ring=1;light=1}
-    else if(phase<.72){const x=smooth((phase-.56)/.16);ring=1-x;stream=x;light=1}
-    else if(phase<.85){stream=1;light=1}
-    else {const x=smooth((phase-.85)/.15);head=x;stream=1-x;light=1-x}
-    const time=reduced.matches?10.5:seconds;
-    u.uTime.value=time;u.uHead.value=head;u.uRing.value=ring;u.uStream.value=stream;
-    u.uMotion.value=reduced.matches?0:1;u.uLight.value=light;
-    px+=(tx-px)*.035;py+=(ty-py)*.035;
-    stage.rotation.y=.17+Math.sin(time*.24)*.37+px*.24;
-    stage.rotation.x=-.13+Math.sin(time*.17)*.14+py*.17;
-    stage.rotation.z=-.16+Math.sin(time*.12)*.065-stream*.2;
-    stage.scale.setScalar(1+Math.sin(time*.4)*.018);
-    core.visible=ring+stream>.03;
-    halo.visible=ring+stream>.03;
-    core.scale.setScalar(.88+.36*Math.sin(time*1.9));
-    coreU.uTime.value=time;coreU.uPower.value=Math.min(1,(ring+stream)*.88);
-    halo.scale.setScalar(1.2+Math.sin(time*1.1)*.13);
-    dustU.uTime.value=time;dustU.uShape.value=ring;dustU.uPower.value=Math.max(.35,ring,stream);
-    dust.rotation.y=-time*.041;
+    updateScene();
     renderer.render(scene,camera);
   }
   function size(){
@@ -382,7 +475,7 @@
     running=true;last=0;frame=requestAnimationFrame(tick);
   }
   function visibility(){
-    if(reduced.matches){stop();seconds=10.5;render();return}
+    if(reduced.matches){stop();seconds=32;render();return}
     if(visible&&!document.hidden)play();else stop();
   }
   if('ResizeObserver' in window)new ResizeObserver(size).observe(container);
