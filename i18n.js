@@ -841,6 +841,12 @@
   "Informations personnelles enregistrées.": { "en": "Personal information saved.", "ar": "تم حفظ المعلومات الشخصية." },
   "Mot de passe modifié avec succès.": { "en": "Password changed successfully.", "ar": "تم تغيير كلمة المرور بنجاح." },
   });
+  Object.assign(entries, {
+    "Langue de l’application": { en: "Application language", ar: "لغة التطبيق" },
+    "Cette langue sera enregistrée sur votre compte et appliquée à vos prochaines connexions, même sur un autre appareil.": { en: "This language will be saved to your account and used the next time you sign in, even on another device.", ar: "ستُحفظ هذه اللغة في حسابك وتُستخدم عند تسجيل الدخول لاحقًا، حتى على جهاز آخر." },
+    "Choisissez une langue valide.": { en: "Choose a valid language.", ar: "اختر لغة صالحة." },
+    "La langue a été modifiée sur cet appareil, mais sa sauvegarde sur le compte a échoué.": { en: "The language changed on this device, but could not be saved to your account.", ar: "تم تغيير اللغة على هذا الجهاز، لكن تعذّر حفظها في حسابك." },
+  });
   const localeTags={fr:'fr-FR',en:'en-GB',ar:'ar'};
   const supported=['fr','en','ar'];
   const storageKey='pemesa.language';
