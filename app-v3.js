@@ -57,7 +57,7 @@ async function authSubmit(event){event.preventDefault();if(busy)return;if(!clien
  const email=$('#auth-email').value.trim(),password=$('#auth-password').value;const name=$('#auth-name').value.trim();
  busy=true;$('#auth-submit').disabled=true;
  try{if(authMode==='reset'){const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;feedback('Si un compte correspond à cette adresse, vous recevrez un e-mail.');return}
- if(authMode==='signup'){const {data:res,error}=await client.auth.signUp({email,password,options:{data:{full_name:name}}});if(error)throw error;if(!res.session){feedback('Compte créé. Vérifiez votre e-mail pour confirmer votre inscription.');return}}
+ if(authMode==='signup'){const {data:res,error}=await client.auth.signUp({email,password,options:{data:{full_name:name,preferred_language:window.PEMESA_I18N?.language||'fr'}}});if(error)throw error;if(!res.session){feedback('Compte créé. Vérifiez votre e-mail pour confirmer votre inscription.');return}}
  else{const {error}=await client.auth.signInWithPassword({email,password});if(error)throw error}
  const {data:session}=await client.auth.getUser();user=session?.user||null;if(!user)throw Error('Session indisponible.');closeAuth();data={};showWorkspace('account');await loadAccount()}catch(e){feedback(e.message||'Connexion impossible.',true)}finally{busy=false;$('#auth-submit').disabled=false}}
 document.addEventListener('click',e=>{const b=e.target.closest('button,a');if(!b)return;
