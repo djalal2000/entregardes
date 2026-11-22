@@ -1185,6 +1185,20 @@
     "ar": "يجب أن يكون جمع البيانات نشطًا والساعة متصلة."
   }
 });
+  Object.assign(entries, {
+  "RECHERCHE SUR LES CONDITIONS DE TRAVAIL": {
+    "en": "WORKING CONDITIONS RESEARCH",
+    "ar": "بحث ظروف العمل"
+  },
+  "SCROLL TO EXPLORE ↓": {
+    "en": "SCROLL TO EXPLORE ↓",
+    "ar": "مرّر للاستكشاف ↓"
+  },
+  "PEMESA / EXPLORATION": {
+    "en": "PEMESA / EXPLORATION",
+    "ar": "PEMESA / استكشاف"
+  }
+});
   const localeTags={fr:'fr-FR',en:'en-GB',ar:'ar'};
   const supported=['fr','en','ar'];
   const storageKey='pemesa.language';
