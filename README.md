@@ -41,23 +41,20 @@ Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `conf
 
 **Attention — données de santé :** cette démonstration n'est pas prête à recueillir des données physiologiques nominatives réelles. Avant une étude avec des participants, faire valider les aspects RGPD et les exigences françaises applicables à l'hébergement de données de santé (HDS si requis), le consentement, la sécurité et la gouvernance des données.
 
-## Nouvelle page d'accueil : 120 images au défilement
+## Page d'accueil cinématique — nouvelle version à partir de cinq images
 
-La **page d'accueil publique seulement** contient désormais une expérience plein écran inspirée des présentations Apple, avec un fond `#dcd0c8`, un Canvas HTML5 et trois chapitres éditoriaux en fondu aux positions **0 %, 45 % et 80 %**. La navigation publique, les autres sections d'information, l'authentification Supabase, l'espace utilisateur et le module Galaxy Watch restent disponibles.
+Seule la **page d’accueil publique** utilise le nouveau moteur Canvas, **GSAP ScrollTrigger** et **Lenis**, sur fond `#dcd0c8` avec trois textes apparaissant à 0 %, 45 % et 80 % du défilement. L'espace privé, l'authentification Supabase, les préférences de langue et le module Samsung Galaxy Watch ne sont pas modifiés.
 
-Le nouveau système fonctionne avec **GSAP 3.15.0, ScrollTrigger et Lenis 1.3.27** (chargés depuis des CDN) et pilote les images `frame_0001.webp` à `frame_0120.webp` suivant la progression du scroll. Le Canvas recadre les images en mode **cover**, sans les déformer, avec une résolution retina limitée. Les 120 images sont préchargées en parallèle, avec un **pourcentage réel** et un bouton pour ne pas bloquer l'interface durant le chargement.
+La séquence v2 est construite à partir de cinq images clés (portrait réaliste, visage maillé, rotation avec fibres, câbles vers l’anneau, anneau final). Le moteur de rendu produit **120 images WebP** en 1280×720 avec un mouvement de caméra simulé et des transitions progressives. Il s'agit d'une animation **2,5D pilotée au scroll**, pas d'un véritable modèle 3D manipulable du visage.
 
-**Les 120 images WebP sont maintenant publiées dans `frames/`**, via le workflow GitHub Actions `create-home-frames.yml`. L'accueil utilise directement `frame_0001.webp` à `frame_0120.webp`, avec préchargement et affichage synchronisé au scroll. Le générateur `scripts/build_home_frames.py` permet de régénérer les images. Il essaie de recadrer la vidéo de référence publique ; si elle est indisponible, il génère une composition fibrée originale de secours. Ces frames sont un premier montage visuel, et non les images sources en haute résolution du site original. Vérifiez les droits de diffusion de tout contenu issu de la vidéo de référence avant une publication commerciale.
+- `home-scroll.js` : lit **exclusivement** `frames-v2/frame_0001.webp` à `frames-v2/frame_0120.webp` (ancienne séquence de captures désactivée) ; écran de chargement et solution de secours si les nouveaux fichiers sont absents.
+- `home-scroll.css` : styles de la page d’accueil uniquement.
+- `scripts/build_cinematic_v2.py` : génération des 120 WebP à partir des 5 fichiers `assets/keyframes/keyframe_01.webp` à `keyframe_05.webp`.
+- `.github/workflows/build-cinematic-v2.yml` : détecte l'arrivée des cinq images clés et publie automatiquement les 120 images générées dans `frames-v2/`.
 
-**Fichiers actifs :**
-- `home-scroll.js` : chargement des WebP, redimensionnement du Canvas, GSAP ScrollTrigger, Lenis, transitions et mode de secours.
-- `home-scroll.css` : styles spécifiques à la nouvelle interface d'accueil uniquement.
-- `index.html` : les trois chapitres et le Canvas remplacent l'ancien bloc `landing-hero`.
-- `frames/README.md` : instructions de nommage et de compression pour les 120 fichiers.
+**État de publication :** le code de l'accueil et son workflow sont installés, mais les cinq images clés générées dans la conversation doivent encore être **ajoutées au dépôt GitHub**. Elles sont fournies dans l'archive `pemesa-cinq-images-cles.zip`. Le lecteur n'affiche pas les anciennes images de qualité insatisfaisante en attendant la publication. La séquence complète de 120 WebP est également disponible dans l'archive `pemesa-nouvelle-animation-120-webp.zip`.
 
-L'ancienne animation 3D (code `cinematic-3d.js`) est conservée dans le dépôt à titre historique, mais n'est **plus chargée** sur le site. La nouvelle interface n'utilise ni la photo d'un portrait externe ni le modèle 3D précédent.
-
-L'application prend en compte `prefers-reduced-motion` et offre un mode de scroll natif si les librairies externes sont indisponibles. Les commandes du tableau de bord ne sont pas modifiées. Les contrôles statiques du code ont été effectués ; la lecture visuelle sur appareil et le chargement des vrais WebP restent à vérifier.
+La syntaxe du JavaScript et la production locale des 120 images ont été vérifiées. Le rendu sur le site publié doit être validé après la présence effective des fichiers sur GitHub.
 
 ## Contrôle des montres Samsung Galaxy Watch
 
