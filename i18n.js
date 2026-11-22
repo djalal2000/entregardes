@@ -811,7 +811,8 @@
     "ar": "تطوير نموذج الويب الأولي:"
   }
 };
-  Object.assign(entries, {\n  "Paramètres du compte": { "en": "Account settings", "ar": "إعدادات الحساب" },
+  Object.assign(entries, {
+  "Paramètres du compte": { "en": "Account settings", "ar": "إعدادات الحساب" },
   "MON ESPACE": { "en": "MY ACCOUNT", "ar": "حسابي" },
   "Personnalisez vos informations et sécurisez votre compte.": { "en": "Personalize your information and secure your account.", "ar": "خصّص معلوماتك وأمّن حسابك." },
   "Photo de profil": { "en": "Profile picture", "ar": "الصورة الشخصية" },
@@ -838,7 +839,9 @@
   "Photo de profil enregistrée.": { "en": "Profile photo saved.", "ar": "تم حفظ الصورة الشخصية." },
   "Photo de profil supprimée.": { "en": "Profile photo removed.", "ar": "تم حذف الصورة الشخصية." },
   "Informations personnelles enregistrées.": { "en": "Personal information saved.", "ar": "تم حفظ المعلومات الشخصية." },
-  "Mot de passe modifié avec succès.": { "en": "Password changed successfully.", "ar": "تم تغيير كلمة المرور بنجاح." },\n  });\n  const localeTags={fr:'fr-FR',en:'en-GB',ar:'ar'};
+  "Mot de passe modifié avec succès.": { "en": "Password changed successfully.", "ar": "تم تغيير كلمة المرور بنجاح." },
+  });
+  const localeTags={fr:'fr-FR',en:'en-GB',ar:'ar'};
   const supported=['fr','en','ar'];
   const storageKey='pemesa.language';
   let current='fr';
