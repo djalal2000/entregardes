@@ -231,6 +231,109 @@
   }));
   stage.add(dust);
 
+
+  // Stage 01 requires a real shaded portrait, not just the earlier wireframe
+  // stand-in. A CC BY 3.0 Lee Perry-Smith head scan loads independently;
+  // a self-contained sculptural face remains visible if a CDN is unavailable.
+  const portrait=new THREE.Group();
+  stage.add(portrait);
+  const portraitMaterials=[];
+  function portraitMaterial(hex,roughness=.83){
+    const m=new THREE.MeshStandardMaterial({
+      color:hex,roughness,metalness:0,transparent:true,opacity:1,
+      depthWrite:true,side:THREE.FrontSide
+    });
+    portraitMaterials.push(m);return m;
+  }
+  const skin=portraitMaterial('#be8c73');
+  const hair=portraitMaterial('#232027',.96);
+  const eyeWhite=portraitMaterial('#f6e8dd',.66);
+  const eyeBrown=portraitMaterial('#28252b',.48);
+  const lip=portraitMaterial('#81564f');
+  const fallbackFace=new THREE.Group();
+  portrait.add(fallbackFace);
+  function ellipsoid(parent,material,x,y,z,sx,sy,sz){
+    const m=new THREE.Mesh(new THREE.SphereGeometry(1,28,20),material);
+    m.position.set(x,y,z);m.scale.set(sx,sy,sz);
+    parent.add(m);return m;
+  }
+  ellipsoid(fallbackFace,skin,0,.07,0,.79,1.15,.72);
+  ellipsoid(fallbackFace,skin,-.81,-.07,0,.17,.27,.14);
+  ellipsoid(fallbackFace,skin,.81,-.07,0,.17,.27,.14);
+  ellipsoid(fallbackFace,hair,0,1.0,-.10,.82,.39,.70);
+  ellipsoid(fallbackFace,hair,0,-.80,.22,.54,.25,.48);
+  ellipsoid(fallbackFace,skin,0,-.02,.66,.145,.27,.20);
+  ellipsoid(fallbackFace,lip,0,-.40,.685,.22,.038,.06);
+  for(const x of [-.285,.285]){
+    ellipsoid(fallbackFace,eyeWhite,x,.31,.655,.12,.082,.055);
+    ellipsoid(fallbackFace,eyeBrown,x,.31,.711,.042,.048,.016);
+    ellipsoid(fallbackFace,hair,x,.46,.65,.15,.034,.056);
+  }
+  // Small irregular curls give the emergency portrait some surface detail.
+  const curlGeo=new THREE.SphereGeometry(1,8,6);
+  const curls=new THREE.InstancedMesh(curlGeo,hair,115);
+  const helper=new THREE.Object3D();
+  for(let i=0;i<115;i++){
+    const a=hash(i*17+12)*tau;
+    const latitude=.20+hash(i*23+9)*1.36;
+    const rr=.79*Math.cos(latitude);
+    const yy=.25+.96*Math.sin(latitude);
+    const zz=.72*Math.cos(latitude);
+    helper.position.set(rr*Math.sin(a),yy,zz*Math.cos(a)-.08);
+    const rad=.055+hash(i*11+3)*.056;
+    helper.scale.set(rad,rad,rad);
+    helper.updateMatrix();curls.setMatrixAt(i,helper.matrix);
+  }
+  fallbackFace.add(curls);
+
+  const ambient=new THREE.HemisphereLight(0xfff6f0,0xb6a6a0,2.05);
+  const keyLight=new THREE.DirectionalLight(0xffe5d1,3.1);
+  keyLight.position.set(2.4,3.2,5.5);
+  const fillLight=new THREE.DirectionalLight(0xc2d7e8,1.1);
+  fillLight.position.set(-3.2,.5,1.0);
+  const rimLight=new THREE.DirectionalLight(0xffb380,1.5);
+  rimLight.position.set(1.5,2,-4);
+  scene.add(ambient,keyLight,fillLight,rimLight);
+
+  // No claim of photorealism when loading fails. The external scan is
+  // credited in the footer and in the repository documentation.
+  let scanReady=false;
+  (async()=>{
+    try{
+      const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
+      const loader=new GLTFLoader();
+      const scan=await loader.loadAsync(
+        'https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb'
+      );
+      const tex=await new THREE.TextureLoader().loadAsync(
+        'https://threejs.org/examples/models/gltf/LeePerrySmith/Map-COL.jpg'
+      );
+      tex.colorSpace=THREE.SRGBColorSpace;
+      tex.flipY=false;
+      const scanBox=new THREE.Box3().setFromObject(scan.scene);
+      const scanSize=scanBox.getSize(new THREE.Vector3());
+      const scanCenter=scanBox.getCenter(new THREE.Vector3());
+      if(!Number.isFinite(scanSize.y)||scanSize.y<=0)throw Error('Modèle 3D invalide.');
+      const scanRoot=new THREE.Group();
+      scan.scene.position.sub(scanCenter);
+      scanRoot.scale.setScalar(2.65/scanSize.y);
+      scanRoot.add(scan.scene);
+      const scanMaterial=new THREE.MeshStandardMaterial({
+        map:tex,color:0xffffff,metalness:0,roughness:.82,
+        transparent:true,opacity:1,depthWrite:true,side:THREE.FrontSide
+      });
+      scan.scene.traverse(node=>{if(node.isMesh)node.material=scanMaterial});
+      portraitMaterials.push(scanMaterial);
+      portrait.add(scanRoot);
+      fallbackFace.visible=false;
+      scanReady=true;
+      document.documentElement.dataset.cinematicPortrait='scan';
+    }catch(err){
+      console.warn('Portrait 3D : modèle distant indisponible, portrait de secours conservé.',err);
+      document.documentElement.dataset.cinematicPortrait='fallback';
+    }
+  })();
+
   let w=0,h=0,frame=0,last=0,seconds=0,running=false,visible=true;
   let px=0,py=0,tx=0,ty=0;
   function render(){
