@@ -2,7 +2,14 @@
   'use strict';
   const el=id=>document.getElementById(id);
   const bucket='profile-avatars';
-  let photoUrl='',photoPath='',activeUserId='';
+  let photoUrl='',photoPath='',activeUserId='',languageAccountId='';
+  const validLanguage=code=>['fr','en','ar'].includes(code);
+  function restoreAccountLanguage(u){
+    if(languageAccountId===u.id)return;
+    languageAccountId=u.id;
+    const lang=u.user_metadata?.preferred_language;
+    if(validLanguage(lang) && window.PEMESA_I18N?.language!==lang)window.PEMESA_I18N?.setLanguage(lang);
+  }
   const current=()=>typeof user!=='undefined' && typeof mode!=='undefined' && mode==='account' ? user : null;
   const message=(id,text,error=false)=>{const node=el(id); if(node){node.textContent=text;node.dataset.error=error?'true':'false'}};
   const initials=u=>(u?.user_metadata?.full_name||u?.email||'PM').trim().split(/\s+/).slice(0,2).map(v=>v[0]?.toUpperCase()||'').join('');
@@ -11,7 +18,8 @@
     el('profile-settings-open').hidden=!yes;
     el('profile-photo-open').hidden=!yes;
     el('demo-avatar').hidden=yes;
-    if(!yes){el('profile-dialog').close?.();el('profile-photo-dialog').close?.();photoUrl='';photoPath='';activeUserId='';return}
+    if(!yes){el('profile-dialog').close?.();el('profile-photo-dialog').close?.();photoUrl='';photoPath='';activeUserId='';languageAccountId='';return}
+    restoreAccountLanguage(u);
     const letters=initials(u);
     for(const id of ['profile-picture-initials','profile-photo-large-initials'])el(id).textContent=letters;
     el('profile-photo-open').querySelector('span').textContent=letters;
@@ -42,6 +50,7 @@
     const u=current();if(!u)return;
     const m=u.user_metadata||{},f=el('profile-info-form'),email=el('profile-email-form');
     for(const key of ['full_name','birth_date','phone_contact','profession'])f.elements.namedItem(key).value=m[key]||'';
+    f.elements.namedItem('preferred_language').value=validLanguage(m.preferred_language)?m.preferred_language:(window.PEMESA_I18N?.language||'fr');
     email.elements.namedItem('email').value=u.email||'';
     for(const id of ['profile-info-status','profile-email-status','profile-password-status'])message(id,'');
     el('profile-password-form').reset();
@@ -62,9 +71,11 @@
       if(kind==='info'){
         const vals=Object.fromEntries(new FormData(form).entries());
         vals.full_name=vals.full_name.trim(); vals.phone_contact=vals.phone_contact.trim();vals.profession=vals.profession.trim();
+        if(!validLanguage(vals.preferred_language))throw Error('Choisissez une langue valide.');
         if(!vals.full_name)throw Error('Veuillez saisir votre nom.');
         if(vals.birth_date && vals.birth_date>new Date().toISOString().slice(0,10))throw Error('La date de naissance ne peut pas être future.');
         const {data,error}=await client.auth.updateUser({data:vals});if(error)throw error;user=data.user;updateAccount();
+        if(window.PEMESA_I18N?.language!==vals.preferred_language)window.PEMESA_I18N?.setLanguage(vals.preferred_language);
         message(id,'Informations personnelles enregistrées.');
       } else if(kind==='email'){
         const address=form.elements.namedItem('email').value.trim();
@@ -107,6 +118,19 @@
       user=data.user;photoPath='';photoUrl='';paintPhoto();await client.storage.from(bucket).remove([old]);
       message('profile-photo-status','Photo de profil supprimée.');
     }catch(err){message('profile-photo-status',err.message||'Suppression impossible.',true)}finally{b.disabled=false}
+  });
+  // Header language changes are account preferences as well as local display changes.
+  let languageSave=Promise.resolve();
+  document.addEventListener('change',event=>{
+    if(!event.target.matches('[data-language-select]'))return;
+    const u=current(),lang=event.target.value;
+    if(!u||!validLanguage(lang))return;
+    languageSave=languageSave.catch(()=>{}).then(async()=>{
+      if(current()?.id!==u.id)return;
+      const {data,error}=await client.auth.updateUser({data:{preferred_language:lang}});
+      if(error){toast('La langue a été modifiée sur cet appareil, mais sa sauvegarde sur le compte a échoué.');return}
+      if(current()?.id===u.id){user=data.user;const selector=el('profile-info-form').elements.namedItem('preferred_language');if(!el('profile-dialog').open)selector.value=lang;}
+    });
   });
   if(client)client.auth.onAuthStateChange(()=>setTimeout(pending,30));
   showControls();
