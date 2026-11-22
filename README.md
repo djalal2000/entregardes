@@ -41,21 +41,23 @@ Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `conf
 
 **Attention — données de santé :** cette démonstration n'est pas prête à recueillir des données physiologiques nominatives réelles. Avant une étude avec des participants, faire valider les aspects RGPD et les exigences françaises applicables à l'hébergement de données de santé (HDS si requis), le consentement, la sécurité et la gouvernance des données.
 
-## Animation cinématique en six étapes — correctif du portrait
+## Nouvelle page d'accueil : 120 images au défilement
 
-La page d'accueil présente une séquence de **39 secondes** inspirée de six images de référence : portrait ouvert, apparition du maillage, rotation de la tête abstraite, déploiement des fibres, zoom sur les filaments et anneau lumineux.
+La **page d'accueil publique seulement** contient désormais une expérience plein écran inspirée des présentations Apple, avec un fond `#dcd0c8`, un Canvas HTML5 et trois chapitres éditoriaux en fondu aux positions **0 %, 45 % et 80 %**. La navigation publique, les autres sections d'information, l'authentification Supabase, l'espace utilisateur et le module Galaxy Watch restent disponibles.
 
-**Important :** le scan 3D Lee Perry-Smith précédent a été retiré. Il affichait un buste chauve aux yeux fermés et une texture de cou incorrecte. Le portrait d'ouverture est désormais une **photographie 2D d'un autre modèle** aux yeux ouverts et cheveux bouclés, qui s'efface progressivement vers un objet de fibres Three.js. La rotation du visage n'est donc pas un véritable morphing photoréaliste de la photo : c'est un fondu chorégraphié vers une sculpture 3D abstraite. Cette solution est plus propre, mais ne reproduit pas le visage ni le rendu filmés image par image.
+Le nouveau système fonctionne avec **GSAP 3.15.0, ScrollTrigger et Lenis 1.3.27** (chargés depuis des CDN) et pilote les images `frame_0001.webp` à `frame_0120.webp` suivant la progression du scroll. Le Canvas recadre les images en mode **cover**, sans les déformer, avec une résolution retina limitée. Les 120 images sont préchargées en parallèle, avec un **pourcentage réel** et un bouton pour ne pas bloquer l'interface durant le chargement.
 
-- **Portrait** : Arshid Yousaf, [Pexels](https://www.pexels.com/photo/portrait-of-a-young-man-with-curly-hair-and-beard-29196814/), photographie utilisable suivant la licence Pexels.
-- **Moteur** : `cinematic-3d.js`, animation WebGL Three.js, fibre géométrique et particules sans données personnelles.
-- **Présentation** : `cinematic-design.css`, intégration en dégradé dans le fond rosé, responsive et texte lisible.
-- **Secours** : `cinematic-hero.js`, ancienne animation Canvas 2D si WebGL est indisponible.
-- **Accessibilité** : pause hors écran, arrêt quand l'onglet n'est pas visible et image fixe avec `prefers-reduced-motion`.
+**Les images ne sont pas encore dans le dépôt.** Le dossier `frames/` contient des instructions, mais aucun WebP utilisateur. Tant que `frames/frame_0001.webp` n'est pas disponible, l'accueil présente une **composition abstraite de secours** sur fond beige, tout en conservant le défilement et les textes. Le vrai scroll image-par-image est activé automatiquement après ajout des images. Les fichiers manquants dans une séquence partielle sont remplacés visuellement par les images voisines.
 
-Les comptes Supabase, la collecte manuelle, les traductions et les contrôles Galaxy Watch sont conservés.
+**Fichiers actifs :**
+- `home-scroll.js` : chargement des WebP, redimensionnement du Canvas, GSAP ScrollTrigger, Lenis, transitions et mode de secours.
+- `home-scroll.css` : styles spécifiques à la nouvelle interface d'accueil uniquement.
+- `index.html` : les trois chapitres et le Canvas remplacent l'ancien bloc `landing-hero`.
+- `frames/README.md` : instructions de nommage et de compression pour les 120 fichiers.
 
-Le code a été vérifié, mais le chargement de la photo externe et le rendu WebGL réel doivent être contrôlés sur le site publié. Pour obtenir un vrai morphing photoréaliste d'un même visage tout au long de la séquence, il faut produire un modèle 3D coiffé et texturé avec des déformations construites pour cette animation.
+L'ancienne animation 3D (code `cinematic-3d.js`) est conservée dans le dépôt à titre historique, mais n'est **plus chargée** sur le site. La nouvelle interface n'utilise ni la photo d'un portrait externe ni le modèle 3D précédent.
+
+L'application prend en compte `prefers-reduced-motion` et offre un mode de scroll natif si les librairies externes sont indisponibles. Les commandes du tableau de bord ne sont pas modifiées. Les contrôles statiques du code ont été effectués ; la lecture visuelle sur appareil et le chargement des vrais WebP restent à vérifier.
 
 ## Contrôle des montres Samsung Galaxy Watch
 
