@@ -41,14 +41,19 @@ Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `conf
 
 **Attention — données de santé :** cette démonstration n'est pas prête à recueillir des données physiologiques nominatives réelles. Avant une étude avec des participants, faire valider les aspects RGPD et les exigences françaises applicables à l'hébergement de données de santé (HDS si requis), le consentement, la sécurité et la gouvernance des données.
 
-## Design cinématique inspiré de la référence vidéo
+## Animation 3D inspirée de la vidéo
 
-La page d’accueil et l’espace personnel adoptent une esthétique éditoriale claire : fond minéral rosé, navigation discrète, typographie épurée et touches d’orange. La première section contient une sculpture organique de filaments animée en Canvas, inspirée du mouvement présenté dans la vidéo fournie par le propriétaire du site, mais réinterprétée autour de l’exploration des conditions de travail. Aucun portrait humain ni contenu vidéo n’est copié ou embarqué dans l’application.
+La page d'accueil comporte désormais une **scène WebGL réelle avec Three.js 0.186.1** et un modèle **original et abstrait** fait de fibres animées. L'animation suit une séquence : une forme organique évoquant une tête sculptée, puis une couronne tressée en volume, puis une gerbe de filaments avec extrémités orangées, avant de recommencer. De la poussière 3D et un noyau lumineux accompagnent les transitions. Le mouvement répond discrètement au pointeur.
 
-- `cinematic-design.css` : thèmes responsive de l’accueil, des panneaux de l’application et de la rubrique Montres connectées.
-- `cinematic-hero.js` : visualisation purement décorative, construite localement sans librairie externe ni collecte de données.
-- L’animation respecte `prefers-reduced-motion`, et s’arrête quand la page est masquée ou que son élément sort du viewport.
-- Les fonctions de connexion, de personnalisation du compte, d’analyse et de contrôle des montres restent inchangées.
+- `cinematic-3d.js` : moteur WebGL, géométries paramétriques 3D, morphing dans les shaders GPU, particules et transitions. Chargement du module Three.js depuis un CDN avec version figée.
+- `cinematic-hero.js` : solution de repli Canvas 2D si le moteur WebGL ou son téléchargement n'est pas disponible.
+- `cinematic-design.css` : styles du site, fond rosé minéral, mise en page responsive et harmonisation des panneaux.
+- L'animation s'arrête lorsque l'onglet est masqué ou que le composant sort de l'écran. Avec `prefers-reduced-motion`, une forme statique remplace la boucle.
+- La création de compte, l'authentification Supabase, les mesures et les commandes Galaxy Watch ne sont pas modifiées.
+
+**Limite de fidélité :** ce morphing reste une interprétation procédurale originale, pas une copie du visage photoréaliste filmé. Pour reproduire *à l'identique* la transformation d'un portrait reconnaissable en maillage de fibres, il faudrait disposer de son modèle 3D texturé et de ses animations/simulations spécifiques.
+
+**Validation nécessaire :** tester le rendu sur navigateur et appareil physique compatibles WebGL ; la présence du code et les vérifications de syntaxe ne constituent pas un test visuel du résultat publié.
 
 ## Contrôle des montres Samsung Galaxy Watch
 
