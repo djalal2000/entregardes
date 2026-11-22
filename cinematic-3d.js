@@ -334,6 +334,29 @@
     }
   })();
 
+
+  // Warm glow inside the final knitted ring, independent of postprocessing
+  // so it remains lightweight on phones and does not affect site UI elements.
+  const glowCanvas=document.createElement('canvas');
+  glowCanvas.width=128;glowCanvas.height=128;
+  const g=glowCanvas.getContext('2d');
+  if(g){
+    const gradient=g.createRadialGradient(64,64,1,64,64,63);
+    gradient.addColorStop(0,'rgba(255,249,193,1)');
+    gradient.addColorStop(.16,'rgba(255,192,79,.96)');
+    gradient.addColorStop(.38,'rgba(255,117,42,.75)');
+    gradient.addColorStop(.72,'rgba(255,105,45,.20)');
+    gradient.addColorStop(1,'rgba(255,105,45,0)');
+    g.fillStyle=gradient;g.fillRect(0,0,128,128);
+  }
+  const aura=new THREE.Sprite(new THREE.SpriteMaterial({
+    map:new THREE.CanvasTexture(glowCanvas),
+    color:0xffffff,transparent:true,depthWrite:false,
+    blending:THREE.AdditiveBlending,opacity:0
+  }));
+  aura.scale.set(1.55,1.55,1);
+  stage.add(aura);
+
   let w=0,h=0,frame=0,last=0,seconds=0,running=false,visible=true;
   let px=0,py=0,tx=0,ty=0;
 
@@ -434,6 +457,9 @@
     core.scale.setScalar(.86+.22*Math.sin(time*1.6));
     coreU.uTime.value=time;coreU.uPower.value=f.glow;
     halo.scale.setScalar(1.18+.15*Math.sin(time*1.3));
+    aura.visible=f.glow>.02;
+    aura.material.opacity=Math.min(.91,f.glow*.95);
+    aura.scale.setScalar(1.5+.18*Math.sin(time*1.6));
     dustU.uTime.value=time;
     dustU.uShape.value=f.ring;
     dustU.uPower.value=f.particles;
