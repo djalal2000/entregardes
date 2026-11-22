@@ -5,7 +5,7 @@
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const metrics = [['heart_rate','Fréquence cardiaque'],['steps','Nombre de pas'],['activity','Activité physique'],['sleep','Sommeil']];
-  let active=false,cycle=0,channel=null,timer=null,devices=[],commands=[],pairing=null,selected='',busy=false,loading=false,notice='',errorNotice=false;
+  let active=false,cycle=0,channel=null,timer=null,devices=[],commands=[],pairing=null,selected='',busy=false,loading=false,notice='',errorNotice=false,draft=null;
   const me=()=> typeof mode!=='undefined' && mode==='account' && typeof user!=='undefined' && user && client ? user : null;
   const root=()=>$('#wearables-root');
   const online=d=>!!d?.last_seen_at && Date.now()-new Date(d.last_seen_at).getTime()<120000;
@@ -14,7 +14,7 @@
   function announce(message,isError=false){notice=message;errorNotice=isError;}
   function render(){
     if(!active||!root())return;
-    const u=me(),d=current(),isLive=online(d),opted=!!d?.collection_opt_in;
+    const u=me(),d=current(),isLive=online(d),opted=!!d?.collection_opt_in;const currentDraft=draft?.deviceId===d?.id?draft:null;
     if(d)selected=d.id;
     const cmd=commands.find(c=>c.device_id===d?.id);
     const currentPair=pairing&&pairing.status==='pending'&&new Date(pairing.expires_at).getTime()>Date.now();
@@ -44,7 +44,7 @@
         </section>
         <section class="watch-panel">
           <div class="watch-panel-head"><div><span class="watch-kicker">03 · DONNÉES</span><h3>Capteurs et autorisations</h3><p>Choisissez les données demandées à l'application. Leur disponibilité dépend du modèle et des permissions Android.</p></div></div>
-          <form id="watch-preferences"><div class="watch-metrics">${metrics.map(([key,label])=>`<label><input type="checkbox" name="metric" value="${key}" ${(d.requested_metrics||[]).includes(key)?'checked':''}>${esc(label)}</label>`).join('')}</div><label class="watch-opt-in"><input type="checkbox" name="opt_in" ${opted?'checked':''}><span>J’autorise la collecte des catégories sélectionnées pour mon compte PEMESA. Je peux retirer cette autorisation à tout moment.</span></label><div class="watch-form-actions"><button class="watch-button watch-button-primary" type="submit" ${busy?'disabled':''}>Enregistrer les autorisations</button><button class="watch-button watch-button-quiet" type="button" data-watch-action="remove">Dissocier la montre</button></div></form>
+          <form id="watch-preferences"><div class="watch-metrics">${metrics.map(([key,label])=>`<label><input type="checkbox" name="metric" value="${key}" ${(currentDraft?currentDraft.metrics:(d.requested_metrics||[])).includes(key)?'checked':''}>${esc(label)}</label>`).join('')}</div><label class="watch-opt-in"><input type="checkbox" name="opt_in" ${(currentDraft?currentDraft.optIn:opted)?'checked':''}><span>J’autorise la collecte des catégories sélectionnées pour mon compte PEMESA. Je peux retirer cette autorisation à tout moment.</span></label><div class="watch-form-actions"><button class="watch-button watch-button-primary" type="submit" ${busy?'disabled':''}>Enregistrer les autorisations</button><button class="watch-button watch-button-quiet" type="button" data-watch-action="remove">Dissocier la montre</button></div></form>
           <p class="watch-footnote">Ce module ne conserve pas les mesures physiologiques brutes. Toute collecte de santé destinée à la recherche nécessite un cadre de sécurité et de conformité adapté.</p>
         </section>`:''}
         </div><aside class="watch-aside">
@@ -74,7 +74,7 @@
   }
   function mount(){
     if(active)unmount();
-    active=true;cycle++;devices=[];commands=[];pairing=null;selected='';announce('');
+    active=true;cycle++;devices=[];commands=[];pairing=null;selected='';draft=null;announce('');
     render();
     const u=me();if(!u)return;
     const onChange=()=>{if(active)load()};
@@ -114,12 +114,13 @@
     if(optIn&&!chosen.length)throw Error('Sélectionnez au moins une catégorie de données.');
     const x=await client.from('wearable_devices').update({requested_metrics:chosen,collection_opt_in:optIn,collection_opt_in_at:optIn?(d.collection_opt_in_at||new Date().toISOString()):null}).eq('id',d.id).eq('user_id',u.id);
     if(x.error)throw x.error;
+    draft=null;
     if(!optIn&&d.collection_opt_in){await send('stop');announce('Autorisation retirée. Demande d’arrêt transmise, en attente de confirmation.')}
     else announce('Autorisations de collecte enregistrées.');
   }
   async function run(action,node){
     if(!me()||busy)return;
-    if(action==='select'){selected=node.dataset.id;announce('');render();return}
+    if(action==='select'){selected=node.dataset.id;draft=null;announce('');render();return}
     if(action==='copy'){
       try{if(pairing){await navigator.clipboard.writeText(pairing.pairing_code);announce('Code copié.');render()}}
       catch{announce('Copie indisponible : sélectionnez le code affiché.',true);render()}
@@ -141,6 +142,11 @@
     if(!active||!event.target.closest('#wearables-root'))return;
     const button=event.target.closest('[data-watch-action]');
     if(button){event.preventDefault();run(button.dataset.watchAction,button)}
+  });
+  document.addEventListener('change',event=>{
+    if(!active||!event.target.closest?.('#watch-preferences'))return;
+    const form=event.target.closest('#watch-preferences'),d=current();if(!d)return;
+    draft={deviceId:d.id,metrics:[...form.querySelectorAll('input[name=metric]:checked')].map(x=>x.value),optIn:form.elements.namedItem('opt_in').checked};
   });
   document.addEventListener('submit',async event=>{
     if(!active||event.target.id!=='watch-preferences')return;
