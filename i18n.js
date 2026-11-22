@@ -1199,6 +1199,104 @@
     "ar": "PEMESA / استكشاف"
   }
 });
+  Object.assign(entries, {
+  "EXPLORER / PEMESA": {
+    "en": "EXPLORE / PEMESA",
+    "ar": "استكشاف / بيميسا"
+  },
+  "OBSERVATION & RECHERCHE": {
+    "en": "OBSERVATION & RESEARCH",
+    "ar": "الملاحظة والبحث"
+  },
+  "DONNÉES & ACTIVITÉS": {
+    "en": "DATA & ACTIVITIES",
+    "ar": "البيانات والأنشطة"
+  },
+  "VISUALISATION & COMPRÉHENSION": {
+    "en": "VISUALIZATION & INSIGHT",
+    "ar": "التصور والفهم"
+  },
+  "Comprendre la pénibilité au travail.": {
+    "en": "Understanding workplace strain.",
+    "ar": "فهم مشقة العمل."
+  },
+  "Éclairer les conditions de travail.": {
+    "en": "Making working conditions clearer.",
+    "ar": "توضيح ظروف العمل."
+  },
+  "PEMESA étudie les liens entre l’environnement, les activités professionnelles et le ressenti des soignants. Découvrez un espace de suivi et de visualisation.": {
+    "en": "PEMESA studies links between the environment, professional activities and care workers’ experiences. Discover a space for monitoring and visualization.",
+    "ar": "يدرس بيميسا العلاقة بين بيئة العمل والأنشطة المهنية وتجارب العاملين في الرعاية الصحية. اكتشف مساحة للمتابعة والتصور."
+  },
+  "Créer mon espace": {
+    "en": "Create my account",
+    "ar": "إنشاء حسابي"
+  },
+  "Explorer la démo": {
+    "en": "Explore the demo",
+    "ar": "استكشاف العرض التجريبي"
+  },
+  "Prototype de recherche · Mesures de démonstration": {
+    "en": "Research prototype · Demonstration measurements",
+    "ar": "نموذج بحثي أولي · قياسات توضيحية"
+  },
+  "Observer les activités.": {
+    "en": "Observe activities.",
+    "ar": "مراقبة الأنشطة."
+  },
+  "Comprendre les mouvements.": {
+    "en": "Understand movement.",
+    "ar": "فهم الحركات."
+  },
+  "Croiser les observations issues du terrain avec les activités physiques et les données recueillies, dans le cadre du projet de recherche.": {
+    "en": "Connect field observations with physical activity and recorded data as part of the research project.",
+    "ar": "الربط بين الملاحظات الميدانية والنشاط البدني والبيانات المسجلة في إطار المشروع البحثي."
+  },
+  "Découvrir les fonctionnalités": {
+    "en": "Explore features",
+    "ar": "اكتشف الميزات"
+  },
+  "Transformer les données en perspectives.": {
+    "en": "Turn data into insights.",
+    "ar": "تحويل البيانات إلى رؤى."
+  },
+  "Visualiser les tendances, contextualiser les postes et mieux comprendre les conditions de travail grâce à une interface claire.": {
+    "en": "Visualize trends, put shifts into context and understand working conditions through a clear interface.",
+    "ar": "تصور الاتجاهات وفهم سياق المناوبات وظروف العمل عبر واجهة واضحة."
+  },
+  "Voir la démonstration": {
+    "en": "See the demo",
+    "ar": "عرض النسخة التجريبية"
+  },
+  "OUVRIR LA DÉMONSTRATION": {
+    "en": "OPEN THE DEMO",
+    "ar": "افتح العرض التجريبي"
+  },
+  "DÉFILER POUR EXPLORER": {
+    "en": "SCROLL TO EXPLORE",
+    "ar": "مرّر للاستكشاف"
+  },
+  "DÉFILEMENT": {
+    "en": "SCROLL",
+    "ar": "التمرير"
+  },
+  "IMAGES DE LA SÉQUENCE": {
+    "en": "SEQUENCE IMAGES",
+    "ar": "صور التسلسل"
+  },
+  "Chargement de la séquence": {
+    "en": "Loading sequence",
+    "ar": "جارٍ تحميل التسلسل"
+  },
+  "Continuer sans attendre": {
+    "en": "Continue without waiting",
+    "ar": "المتابعة دون انتظار"
+  },
+  "Aperçu conceptuel · Aucune mesure en temps réel": {
+    "en": "Concept preview · No real-time measurements",
+    "ar": "عرض تصوري · لا توجد قياسات فورية"
+  }
+});
   const localeTags={fr:'fr-FR',en:'en-GB',ar:'ar'};
   const supported=['fr','en','ar'];
   const storageKey='pemesa.language';
