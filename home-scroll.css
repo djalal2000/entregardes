@@ -50,3 +50,6 @@ html[dir=rtl] #site #pemesa-scroll-experience .pm-story-footer{direction:rtl}
 
 #site #pemesa-scroll-experience canvas{visibility:hidden}
 #site #pemesa-scroll-experience.pm-frames-ready canvas{visibility:visible}
+
+html.lenis{scroll-behavior:auto!important}
+html.lenis body{scroll-behavior:auto!important}
