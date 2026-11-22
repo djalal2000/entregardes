@@ -1297,6 +1297,36 @@
     "ar": "عرض تصوري · لا توجد قياسات فورية"
   }
 });
+  Object.assign(entries, {
+  "Transformer les données": {
+    "en": "Turn data",
+    "ar": "تحويل البيانات"
+  },
+  "en perspectives.": {
+    "en": "into insights.",
+    "ar": "إلى رؤى."
+  },
+  "en perspectives": {
+    "en": "into insights",
+    "ar": "إلى رؤى"
+  },
+  "Introduction à PEMESA": {
+    "en": "Introducing PEMESA",
+    "ar": "مقدمة عن بيميسا"
+  },
+  "Activités et mouvements": {
+    "en": "Activities and movement",
+    "ar": "الأنشطة والحركات"
+  },
+  "Visualisation des observations": {
+    "en": "Visualizing observations",
+    "ar": "تصور الملاحظات"
+  },
+  "Découvrir PEMESA au défilement": {
+    "en": "Explore PEMESA as you scroll",
+    "ar": "استكشف بيميسا أثناء التمرير"
+  }
+});
   const localeTags={fr:'fr-FR',en:'en-GB',ar:'ar'};
   const supported=['fr','en','ar'];
   const storageKey='pemesa.language';
