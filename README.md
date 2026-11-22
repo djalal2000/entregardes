@@ -41,6 +41,21 @@ Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `conf
 
 **Attention — données de santé :** cette démonstration n'est pas prête à recueillir des données physiologiques nominatives réelles. Avant une étude avec des participants, faire valider les aspects RGPD et les exigences françaises applicables à l'hébergement de données de santé (HDS si requis), le consentement, la sécurité et la gouvernance des données.
 
+## Contrôle des montres Samsung Galaxy Watch
+
+La nouvelle rubrique **Montres connectées** dans l'espace personnel permet de :
+
+- créer un code d'association temporaire à 6 chiffres, valable 10 minutes ;
+- voir les montres déclarées depuis l'application mobile et leur état réel en ligne/hors ligne ;
+- consulter la batterie, le dernier contact et le compteur de transferts déclarés ;
+- autoriser ou révoquer les catégories de capteurs (fréquence cardiaque, pas, activité et sommeil) ;
+- envoyer les demandes **Démarrer, Pause, Arrêter** et consulter leur confirmation ou leur échec ;
+- dissocier l'appareil du compte.
+
+Les accès sont sécurisés par Supabase Auth et RLS. Les tables et la fonction d'association sont décrites dans `supabase/wearables.sql`. L'intégration Android/Wear OS est décrite dans `docs/galaxy-watch-integration.md`.
+
+**Limite importante :** les commandes sont enregistrées et diffusées, mais l'application mobile et l'application de la montre doivent encore implémenter leur réception, l'acquisition de données et les accusés d'exécution. Le dépôt web ne contient pas ces applications natives. Ce module n'enregistre aucune mesure physiologique brute et ne doit pas être confondu avec une collecte médicale opérationnelle.
+
 ## Architecture
 
 - `index.html` : site de présentation + espace de démonstration + fenêtre de connexion.
@@ -48,6 +63,9 @@ Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `conf
 - `app-v3.js` : logique active du planning, du suivi et des analyses.
 - `config.js` : configuration publique Supabase (vide par défaut).
 - `supabase/schema.sql` : schéma des données par utilisateur et politiques RLS.
+- `supabase/wearables.sql` : tables et RPC des montres (appliqué sur le projet Supabase existant).
+- `wearables.js` / `wearables.css` : interface Samsung Galaxy Watch et commandes de collecte.
+- `docs/galaxy-watch-integration.md` : contrat d’intégration des applications Android/Wear OS.
 - `CNAME` : sous-domaine officiel actuel `pemesa.shiftcare.me`.
 
 Les anciens fichiers `app.js`, `app-v2.js`, `style.css` et `style-v2.css` sont conservés pour historique, mais ne sont pas chargés par le site.
