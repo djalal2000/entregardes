@@ -244,7 +244,18 @@
     get hasFrames() { return ready; },
     get progress() { return currentProgress; }
   };
-  setupScroll();
-  resize();
-  prepareFrames();
+  if (site.hidden) {
+    const waitForHome = new MutationObserver(() => {
+      if (site.hidden) return;
+      waitForHome.disconnect();
+      setupScroll();
+      resize();
+      prepareFrames();
+    });
+    waitForHome.observe(site, { attributes: true, attributeFilter: ['hidden'] });
+  } else {
+    setupScroll();
+    resize();
+    prepareFrames();
+  }
 })();
