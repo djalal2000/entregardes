@@ -347,8 +347,11 @@
     const f=frameAt(reduced.matches?32:seconds);
     const time=reduced.matches?32:seconds;
     u.uTime.value=time;u.uHead.value=f.head;u.uRing.value=f.ring;
-    u.uStream.value=f.stream;u.uFade.value=f.wire;
-    u.uReveal.value=f.reveal;u.uTip.value=f.tip;
+    u.uStream.value=f.stream;
+    const photoMissing=photo?.classList.contains('cinematic-portrait-unavailable');
+    u.uFade.value=photoMissing?Math.max(.38,f.wire):f.wire;
+    u.uReveal.value=photoMissing?1.4:f.reveal;
+    u.uTip.value=f.tip;
     u.uMotion.value=reduced.matches?0:1;u.uLight.value=f.glow;
     px+=(tx-px)*.032;py+=(ty-py)*.032;
     stage.rotation.y=f.yaw+px*.065;
