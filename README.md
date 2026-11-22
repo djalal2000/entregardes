@@ -41,6 +41,15 @@ Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `conf
 
 **Attention — données de santé :** cette démonstration n'est pas prête à recueillir des données physiologiques nominatives réelles. Avant une étude avec des participants, faire valider les aspects RGPD et les exigences françaises applicables à l'hébergement de données de santé (HDS si requis), le consentement, la sécurité et la gouvernance des données.
 
+## Design cinématique inspiré de la référence vidéo
+
+La page d’accueil et l’espace personnel adoptent une esthétique éditoriale claire : fond minéral rosé, navigation discrète, typographie épurée et touches d’orange. La première section contient une sculpture organique de filaments animée en Canvas, inspirée du mouvement présenté dans la vidéo fournie par le propriétaire du site, mais réinterprétée autour de l’exploration des conditions de travail. Aucun portrait humain ni contenu vidéo n’est copié ou embarqué dans l’application.
+
+- `cinematic-design.css` : thèmes responsive de l’accueil, des panneaux de l’application et de la rubrique Montres connectées.
+- `cinematic-hero.js` : visualisation purement décorative, construite localement sans librairie externe ni collecte de données.
+- L’animation respecte `prefers-reduced-motion`, et s’arrête quand la page est masquée ou que son élément sort du viewport.
+- Les fonctions de connexion, de personnalisation du compte, d’analyse et de contrôle des montres restent inchangées.
+
 ## Contrôle des montres Samsung Galaxy Watch
 
 La nouvelle rubrique **Montres connectées** dans l'espace personnel permet de :
