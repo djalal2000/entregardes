@@ -277,3 +277,14 @@ body{background:var(--cin-bg);color:var(--cin-ink)}
   #site .feature-card{transition:none}
   #site .feature-card:hover{transform:none}
 }
+
+/* Six-scene storyboard details and attribution. */
+#site .cinematic-visual-caption{color:#86766e;letter-spacing:.12em;white-space:nowrap;font-size:10px;text-shadow:0 1px 5px rgba(248,241,238,.7)}
+#site .cinematic-credit{font-size:10px;max-width:255px;line-height:1.55;color:#91817a}
+#site .cinematic-credit a{color:#95664e!important;text-decoration:underline;text-underline-offset:2px}
+#site .cinematic-side-index span:first-child{min-width:21px;text-align:center;transition:opacity .25s ease}
+#site .cinematic-visual{isolation:isolate}
+@media(max-width:600px){
+ #site .cinematic-visual-caption{right:22%;font-size:9px;max-width:76vw;white-space:normal;text-align:right}
+ #site .cinematic-credit{max-width:100%;width:100%}
+}
