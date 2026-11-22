@@ -41,28 +41,21 @@ Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `conf
 
 **Attention — données de santé :** cette démonstration n'est pas prête à recueillir des données physiologiques nominatives réelles. Avant une étude avec des participants, faire valider les aspects RGPD et les exigences françaises applicables à l'hébergement de données de santé (HDS si requis), le consentement, la sécurité et la gouvernance des données.
 
-## Animation 3D — storyboard fidèle en six scènes
+## Animation cinématique en six étapes — correctif du portrait
 
-La page d'accueil utilise **Three.js / WebGL** pour une séquence de 39 secondes inspirée des six captures d'écran fournies par le propriétaire du site. L'effet ne prétend pas être une reproduction image par image du site de référence.
+La page d'accueil présente une séquence de **39 secondes** inspirée de six images de référence : portrait ouvert, apparition du maillage, rotation de la tête abstraite, déploiement des fibres, zoom sur les filaments et anneau lumineux.
 
-| Scène | Temps | Animation |
-| --- | --- | --- |
-| 01. Portrait | 0–5,2 s | Portrait masculin réaliste éclairé, face caméra |
-| 02. Transformation | 5,2–10,9 s | Rotation de la tête, apparition progressive d'un maillage blanc et de particules |
-| 03. Vue arrière | 10,9–16,9 s | Rotation vers l'arrière, surface tissée, apparition des extrémités orange |
-| 04. Émergence | 16,9–22,1 s | Dissolution de la tête en longs filaments blancs inclinés |
-| 05. Zoom fibres | 22,1–28,1 s | Travelling rapproché sur les faisceaux et leurs extrémités orangées |
-| 06. Anneau | 28,1–39 s | Convergence en anneau organique avec noyau lumineux, puis retour fluide au portrait |
+**Important :** le scan 3D Lee Perry-Smith précédent a été retiré. Il affichait un buste chauve aux yeux fermés et une texture de cou incorrecte. Le portrait d'ouverture est désormais une **photographie 2D d'un autre modèle** aux yeux ouverts et cheveux bouclés, qui s'efface progressivement vers un objet de fibres Three.js. La rotation du visage n'est donc pas un véritable morphing photoréaliste de la photo : c'est un fondu chorégraphié vers une sculpture 3D abstraite. Cette solution est plus propre, mais ne reproduit pas le visage ni le rendu filmés image par image.
 
-**Fichiers :** `cinematic-3d.js` (géométrie WebGL, shaders, timeline et caméra), `cinematic-design.css` (présentation responsive), `cinematic-hero.js` (secours Canvas 2D) et `index.html` (chargement et crédits). Les fonctions de connexion, paramètres du compte, analyses et montres connectées restent en place.
+- **Portrait** : Arshid Yousaf, [Pexels](https://www.pexels.com/photo/portrait-of-a-young-man-with-curly-hair-and-beard-29196814/), photographie utilisable suivant la licence Pexels.
+- **Moteur** : `cinematic-3d.js`, animation WebGL Three.js, fibre géométrique et particules sans données personnelles.
+- **Présentation** : `cinematic-design.css`, intégration en dégradé dans le fond rosé, responsive et texte lisible.
+- **Secours** : `cinematic-hero.js`, ancienne animation Canvas 2D si WebGL est indisponible.
+- **Accessibilité** : pause hors écran, arrêt quand l'onglet n'est pas visible et image fixe avec `prefers-reduced-motion`.
 
-**Ressource 3D sous licence :** portrait issu du scan de tête de **Lee Perry-Smith / Infinite-Realities**, mis à disposition sous **CC BY 3.0** via les exemples officiels Three.js. Le modèle et la texture sont chargés à la demande depuis `threejs.org`. La géométrie des fibres, les particules et les transitions sont des créations procédurales propres au site. Crédit et lien vers la licence apparaissent dans le pied de page.
+Les comptes Supabase, la collecte manuelle, les traductions et les contrôles Galaxy Watch sont conservés.
 
-Source : https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith_License.txt — licence : https://creativecommons.org/licenses/by/3.0/.
-
-**Disponibilité et accessibilité :** si le chargement de Three.js ou WebGL échoue, l'ancienne animation Canvas 2D s'affiche. Si seul le scan distant échoue, un portrait procédural prend sa place. Les animations s'arrêtent hors de l'écran ou lorsque l'onglet est masqué ; `prefers-reduced-motion` affiche une scène statique. La densité de fibres et la résolution sont réduites sur mobile.
-
-**Limite :** ce n'est pas le visage identifiable de la vidéo, ni une simulation identique de la coiffure et du maillage filmés. Un modèle 3D animé spécifiquement pour ce personnage serait nécessaire pour une fidélité photoréaliste totale. L'enchaînement et les interpolations ont été testés dans le code ; le rendu visuel sur le site publié reste à valider dans un navigateur compatible.
+Le code a été vérifié, mais le chargement de la photo externe et le rendu WebGL réel doivent être contrôlés sur le site publié. Pour obtenir un vrai morphing photoréaliste d'un même visage tout au long de la séquence, il faut produire un modèle 3D coiffé et texturé avec des déformations construites pour cette animation.
 
 ## Contrôle des montres Samsung Galaxy Watch
 
