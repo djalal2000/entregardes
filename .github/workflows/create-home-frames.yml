@@ -1,0 +1,46 @@
+name: Build PEMESA 120 WebP scroll frames
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/build_home_frames.py'
+      - '.github/workflows/create-home-frames.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-frames:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image tools
+        run: |
+          python -m pip install --disable-pip-version-check pillow numpy yt-dlp
+          ffmpeg -version | head -n 1
+      - name: Retrieve the video reference (optional)
+        continue-on-error: true
+        run: |
+          yt-dlp --no-playlist -f 'b[ext=mp4]/b' --merge-output-format mp4 --socket-timeout 12 --retries 2 -o 'source.%(ext)s' 'https://www.youtube.com/shorts/gVxN-F22N6o'
+          test -f source.mp4
+      - name: Create the complete 120-frame sequence
+        run: python scripts/build_home_frames.py
+      - name: Verify images
+        run: |
+          test "$(find frames -maxdepth 1 -name 'frame_*.webp' | wc -l)" -eq 120
+          ls -lh frames/frame_0001.webp frames/frame_0120.webp
+      - name: Commit generated WebP assets
+        run: |
+          git config user.name 'PEMESA Frames Bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add frames/frame_*.webp
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add 120 WebP images for homepage scroll experience'
+          git push origin HEAD:main
