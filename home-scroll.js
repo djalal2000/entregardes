@@ -6,6 +6,7 @@
   // Cinematic v2 is derived from the five approved visual keyframes.
   // Never silently fall back to the old low-quality captured-video sequence.
   const FRAME_BASE = './frames-v2';
+  const FRAME_ASSET_VERSION = '20261123-published';
   const LOADERS = 7;
   const SCROLL_HEIGHTS = 4.5;
   const root = document.querySelector('#pemesa-scroll-experience');
@@ -29,7 +30,7 @@
     const t = clamp(x, 0, 1);
     return t * t * (3 - 2 * t);
   };
-  const filename = index => FRAME_BASE + '/frame_' + String(index + 1).padStart(4, '0') + '.webp';
+  const filename = index => FRAME_BASE + '/frame_' + String(index + 1).padStart(4, '0') + '.webp?v=' + FRAME_ASSET_VERSION;
   const windows = [
     { begin: 0, end: 0.40, enter: 0, leave: 0.08 },
     { begin: 0.45, end: 0.76, enter: 0.065, leave: 0.08 },
