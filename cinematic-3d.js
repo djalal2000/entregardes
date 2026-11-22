@@ -75,7 +75,8 @@
   geo.boundingSphere=new THREE.Sphere(new THREE.Vector3(),5.5);
   const u={
     uTime:{value:0},uHead:{value:1},uRing:{value:0},
-    uStream:{value:0},uMotion:{value:1},uLight:{value:0}
+    uStream:{value:0},uMotion:{value:1},uLight:{value:0},
+    uFade:{value:0},uReveal:{value:1},uTip:{value:0}
   };
   const filaments=new THREE.Mesh(geo,new THREE.ShaderMaterial({
     uniforms:u,side:THREE.DoubleSide,transparent:true,depthTest:true,depthWrite:false,
@@ -128,7 +129,7 @@
     `,
     fragmentShader:`
       precision highp float;
-      uniform float uRing,uStream,uLight;
+      uniform float uRing,uStream,uLight,uFade,uReveal,uTip;
       varying float vT,vDepth,vVariation;
       void main(){
         float shade=clamp(.61+.21*vDepth+.14*sin(vVariation*17.),.32,.94);
@@ -136,10 +137,11 @@
         vec3 white=vec3(.89,.85,.84)*shade*detail;
         vec3 gray=vec3(.51,.49,.50)*shade;
         vec3 color=mix(gray,white,clamp(.43+vVariation*.57,0.,1.));
-        float tip=smoothstep(.87,.985,vT)*uStream;
+        float tip=smoothstep(.84,.985,vT)*max(uStream,uTip);
         color=mix(color,vec3(1.,.31,.055)*(1.+uLight*.21),tip*.98);
         color+=vec3(.035,.028,.026)*uRing;
-        gl_FragColor=vec4(color,clamp(.8+vDepth*.08,0.,1.));
+        float reveal=smoothstep(-.17,.025,uReveal-(vVariation*.69+vT*.31));
+        gl_FragColor=vec4(color,clamp((.8+vDepth*.08)*uFade*reveal,0.,1.));
       }
     `
   }));
