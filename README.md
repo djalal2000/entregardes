@@ -41,19 +41,28 @@ Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `conf
 
 **Attention — données de santé :** cette démonstration n'est pas prête à recueillir des données physiologiques nominatives réelles. Avant une étude avec des participants, faire valider les aspects RGPD et les exigences françaises applicables à l'hébergement de données de santé (HDS si requis), le consentement, la sécurité et la gouvernance des données.
 
-## Animation 3D inspirée de la vidéo
+## Animation 3D — storyboard fidèle en six scènes
 
-La page d'accueil comporte désormais une **scène WebGL réelle avec Three.js 0.186.1** et un modèle **original et abstrait** fait de fibres animées. L'animation suit une séquence : une forme organique évoquant une tête sculptée, puis une couronne tressée en volume, puis une gerbe de filaments avec extrémités orangées, avant de recommencer. De la poussière 3D et un noyau lumineux accompagnent les transitions. Le mouvement répond discrètement au pointeur.
+La page d'accueil utilise **Three.js / WebGL** pour une séquence de 39 secondes inspirée des six captures d'écran fournies par le propriétaire du site. L'effet ne prétend pas être une reproduction image par image du site de référence.
 
-- `cinematic-3d.js` : moteur WebGL, géométries paramétriques 3D, morphing dans les shaders GPU, particules et transitions. Chargement du module Three.js depuis un CDN avec version figée.
-- `cinematic-hero.js` : solution de repli Canvas 2D si le moteur WebGL ou son téléchargement n'est pas disponible.
-- `cinematic-design.css` : styles du site, fond rosé minéral, mise en page responsive et harmonisation des panneaux.
-- L'animation s'arrête lorsque l'onglet est masqué ou que le composant sort de l'écran. Avec `prefers-reduced-motion`, une forme statique remplace la boucle.
-- La création de compte, l'authentification Supabase, les mesures et les commandes Galaxy Watch ne sont pas modifiées.
+| Scène | Temps | Animation |
+| --- | --- | --- |
+| 01. Portrait | 0–5,2 s | Portrait masculin réaliste éclairé, face caméra |
+| 02. Transformation | 5,2–10,9 s | Rotation de la tête, apparition progressive d'un maillage blanc et de particules |
+| 03. Vue arrière | 10,9–16,9 s | Rotation vers l'arrière, surface tissée, apparition des extrémités orange |
+| 04. Émergence | 16,9–22,1 s | Dissolution de la tête en longs filaments blancs inclinés |
+| 05. Zoom fibres | 22,1–28,1 s | Travelling rapproché sur les faisceaux et leurs extrémités orangées |
+| 06. Anneau | 28,1–39 s | Convergence en anneau organique avec noyau lumineux, puis retour fluide au portrait |
 
-**Limite de fidélité :** ce morphing reste une interprétation procédurale originale, pas une copie du visage photoréaliste filmé. Pour reproduire *à l'identique* la transformation d'un portrait reconnaissable en maillage de fibres, il faudrait disposer de son modèle 3D texturé et de ses animations/simulations spécifiques.
+**Fichiers :** `cinematic-3d.js` (géométrie WebGL, shaders, timeline et caméra), `cinematic-design.css` (présentation responsive), `cinematic-hero.js` (secours Canvas 2D) et `index.html` (chargement et crédits). Les fonctions de connexion, paramètres du compte, analyses et montres connectées restent en place.
 
-**Validation nécessaire :** tester le rendu sur navigateur et appareil physique compatibles WebGL ; la présence du code et les vérifications de syntaxe ne constituent pas un test visuel du résultat publié.
+**Ressource 3D sous licence :** portrait issu du scan de tête de **Lee Perry-Smith / Infinite-Realities**, mis à disposition sous **CC BY 3.0** via les exemples officiels Three.js. Le modèle et la texture sont chargés à la demande depuis `threejs.org`. La géométrie des fibres, les particules et les transitions sont des créations procédurales propres au site. Crédit et lien vers la licence apparaissent dans le pied de page.
+
+Source : https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith_License.txt — licence : https://creativecommons.org/licenses/by/3.0/.
+
+**Disponibilité et accessibilité :** si le chargement de Three.js ou WebGL échoue, l'ancienne animation Canvas 2D s'affiche. Si seul le scan distant échoue, un portrait procédural prend sa place. Les animations s'arrêtent hors de l'écran ou lorsque l'onglet est masqué ; `prefers-reduced-motion` affiche une scène statique. La densité de fibres et la résolution sont réduites sur mobile.
+
+**Limite :** ce n'est pas le visage identifiable de la vidéo, ni une simulation identique de la coiffure et du maillage filmés. Un modèle 3D animé spécifiquement pour ce personnage serait nécessaire pour une fidélité photoréaliste totale. L'enchaînement et les interpolations ont été testés dans le code ; le rendu visuel sur le site publié reste à valider dans un navigateur compatible.
 
 ## Contrôle des montres Samsung Galaxy Watch
 
