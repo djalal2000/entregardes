@@ -57,9 +57,12 @@ def phase(i):
 
 def dissolve(a,b,t,section,i):
     t=float(smooth(t))
-    spread=(X-.5)*[-.15,.16,-.11,.06][section]+(Y-.5)*.045*math.sin(i*.06)
-    grain=noise*.022+(dust-.5)*.024
-    alpha=smooth(np.clip((t-.5)*2.75+spread+grain+.5,0,1))
+    # Directed reveal replaces the crossfade with a narrow transition edge.
+    # This avoids ghost portraits (two faces superposed in the same frame).
+    coord=X if section==0 else 1-X
+    bend=(Y-.5)*(.16 if section%2 else -.10)
+    grain=noise*.012+(dust-.5)*.04
+    alpha=smooth(np.clip((t-coord-bend-grain)*8.0+.5,0,1))
     if t<=.035:alpha[:]=0
     if t>=.965:alpha[:]=1
     alpha=alpha[:,:,None]
