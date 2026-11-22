@@ -1,0 +1,54 @@
+name: Build PEMESA cinematic animation from five images
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'assets/keyframes/*.webp'
+      - 'scripts/build_cinematic_v2.py'
+      - '.github/workflows/build-cinematic-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the renderer
+        run: python -m pip install --disable-pip-version-check pillow numpy opencv-python-headless
+      - name: Check input images
+        id: images
+        run: |
+          if [ -f assets/keyframes/keyframe_01.webp ] && \
+             [ -f assets/keyframes/keyframe_02.webp ] && \
+             [ -f assets/keyframes/keyframe_03.webp ] && \
+             [ -f assets/keyframes/keyframe_04.webp ] && \
+             [ -f assets/keyframes/keyframe_05.webp ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Waiting for all five uploaded keyframe WebPs."
+          fi
+      - name: Render 120 cinematic frames
+        if: steps.images.outputs.ready == 'true'
+        run: |
+          python scripts/build_cinematic_v2.py
+          test "$(find frames-v2 -maxdepth 1 -name 'frame_*.webp' | wc -l)" -eq 120
+      - name: Publish the images
+        if: steps.images.outputs.ready == 'true'
+        run: |
+          git config user.name "PEMESA Cinematic Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frames-v2/frame_*.webp
+          git diff --cached --quiet && exit 0
+          git commit -m "Publish 120 cinematic WebP frames from user's five images"
+          git pull --rebase origin main
+          git push origin HEAD:main
