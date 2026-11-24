@@ -41,20 +41,21 @@ Le code Supabase client utilise le champ historique `supabaseAnonKey` dans `conf
 
 **Attention — données de santé :** cette démonstration n'est pas prête à recueillir des données physiologiques nominatives réelles. Avant une étude avec des participants, faire valider les aspects RGPD et les exigences françaises applicables à l'hébergement de données de santé (HDS si requis), le consentement, la sécurité et la gouvernance des données.
 
-## Page d'accueil cinématique — nouvelle version à partir de cinq images
+## Accueil cinématique piloté au scroll — 180 images
 
-Seule la **page d’accueil publique** utilise le nouveau moteur Canvas, **GSAP ScrollTrigger** et **Lenis**, sur fond `#dcd0c8` avec trois textes apparaissant à 0 %, 45 % et 80 % du défilement. L'espace privé, l'authentification Supabase, les préférences de langue et le module Samsung Galaxy Watch ne sont pas modifiés.
+La **page d’accueil publique uniquement** comporte une animation plein écran réalisée avec Canvas, GSAP ScrollTrigger et Lenis, sur fond `#dcd0c8`. Les trois chapitres éditoriaux s'affichent à **0 %, 45 % et 80 %** du scroll. Les comptes Supabase, les traductions, le tableau de bord et les fonctions Galaxy Watch sont inchangés.
 
-La séquence v2 est construite à partir de cinq images clés (portrait réaliste, visage maillé, rotation avec fibres, câbles vers l’anneau, anneau final). Le moteur de rendu produit **120 images WebP** en 1280×720 avec un mouvement de caméra simulé et des transitions progressives. Il s'agit d'une animation **2,5D pilotée au scroll**, pas d'un véritable modèle 3D manipulable du visage.
+La nouvelle séquence est extraite de **la vidéo MP4 fournie par l'utilisateur**. Elle conserve les mouvements réels du visage, du maillage, des fibres et de l'anneau orange. Le recadrage suit automatiquement la position de l'écran filmé ; les textes de la page d'origine sont atténués et le fond est harmonisé. Ce sont des captures vidéo recadrées, **pas des rendus natifs d'un nouveau modèle 3D**, donc les limites de résolution et d'angle de caméra de l'enregistrement demeurent.
 
-- `home-scroll.js` : lit **exclusivement** `frames-v2/frame_0001.webp` à `frames-v2/frame_0120.webp` (ancienne séquence de captures désactivée) ; écran de chargement et solution de secours si les nouveaux fichiers sont absents.
-- `home-scroll.css` : styles de la page d’accueil uniquement.
-- `scripts/build_cinematic_v2.py` : génération des 120 WebP à partir des 5 fichiers `assets/keyframes/keyframe_01.webp` à `keyframe_05.webp`.
-- `.github/workflows/build-cinematic-v2.yml` : détecte l'arrivée des cinq images clés et publie automatiquement les 120 images générées dans `frames-v2/`.
+- `assets/animation-source.mp4` : source vidéo recadrée et optimisée, incluse au dépôt.
+- `frames-film/frame_0001.webp` à `frame_0180.webp` : 180 images desktop 1280×720.
+- `frames-film-mobile/frame_0001.webp` à `frame_0180.webp` : 180 images mobiles 640×360.
+- `home-scroll.js` et `home-scroll.css` : lecteur Canvas responsive, chargement avec pourcentage, ScrollTrigger, Lenis, trois blocs de texte et illustration de secours.
+- `.github/workflows/build-film-frames.yml` : génération automatique des WebP à partir du MP4 en utilisant Pillow et OpenCV.
 
-**État de publication :** le code de l'accueil et son workflow sont installés, mais les cinq images clés générées dans la conversation doivent encore être **ajoutées au dépôt GitHub**. Elles sont fournies dans l'archive `pemesa-cinq-images-cles.zip`. Le lecteur n'affiche pas les anciennes images de qualité insatisfaisante en attendant la publication. La séquence complète de 120 WebP est également disponible dans l'archive `pemesa-nouvelle-animation-120-webp.zip`.
+Les anciennes variantes `frames/` et `frames-v2/` restent archivées dans le dépôt mais **ne sont plus utilisées par l'accueil**. Le rendu a été vérifié sur des images extraites et la séquence de 180 frames a été publiée. Le chargement et les performances finales doivent être testés dans un véritable navigateur sur plusieurs appareils.
 
-La syntaxe du JavaScript et la production locale des 120 images ont été vérifiées. Le rendu sur le site publié doit être validé après la présence effective des fichiers sur GitHub.
+**Droits de réutilisation :** la vidéo est un enregistrement d'un site tiers. Vérifiez les droits de reproduction et de publication commerciale avant de l'utiliser sur un site public.
 
 ## Contrôle des montres Samsung Galaxy Watch
 
