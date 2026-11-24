@@ -1,12 +1,12 @@
 
 (() => {
   'use strict';
-  const FRAME_COUNT = 120;
-  const SEQUENCE_NAME = 'PEMESA cinematic v2';
-  // Cinematic v2 is derived from the five approved visual keyframes.
-  // Never silently fall back to the old low-quality captured-video sequence.
-  const FRAME_BASE = './frames-v2';
-  const FRAME_ASSET_VERSION = '20261123-published';
+  const FRAME_COUNT = 180;
+  const SEQUENCE_NAME = 'PEMESA cinematic film 180';
+  // Exact motion extracted from the user-supplied reference video.
+  // No frame blending: the video sequence is controlled directly by scroll position.
+  const FRAME_BASE = './frames-film';
+  const FRAME_ASSET_VERSION = '20261124-film1';
   const LOADERS = 7;
   const SCROLL_HEIGHTS = 4.5;
   const root = document.querySelector('#pemesa-scroll-experience');
@@ -139,7 +139,7 @@
       frames[0] = await loadFrame(0);
     } catch {
       root.classList.add('pm-no-frames');
-      console.info('[PEMESA] Nouvelle animation en attente de publication dans /frames-v2.');
+      console.info('[PEMESA] Séquence film de 180 images en attente dans /frames-film.');
       loading = false;
       return;
     }
@@ -213,7 +213,7 @@
     if (window.gsap && window.ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger);
       scrollTrigger = ScrollTrigger.create({
-        id: 'pemesa-home-120',
+        id: 'pemesa-home-180',
         trigger: root,
         start: 'top top',
         end: () => '+=' + Math.round(innerHeight * SCROLL_HEIGHTS),
