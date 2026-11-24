@@ -5,8 +5,8 @@
   const SEQUENCE_NAME = 'PEMESA cinematic film 180';
   // Exact motion extracted from the user-supplied reference video.
   // No frame blending: the video sequence is controlled directly by scroll position.
-  const FRAME_BASE = './frames-film';
-  const FRAME_ASSET_VERSION = '20261124-film1';
+  const FRAME_BASE = matchMedia('(max-width:700px)').matches ? './frames-film-mobile' : './frames-film';
+  const FRAME_ASSET_VERSION = '20261124-film2';
   const LOADERS = 7;
   const SCROLL_HEIGHTS = 4.5;
   const root = document.querySelector('#pemesa-scroll-experience');
