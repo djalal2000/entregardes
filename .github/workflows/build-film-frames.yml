@@ -1,84 +1,36 @@
-name: Publish PEMESA scroll animation from repository video
-
+name: Prepare PEMESA scroll video
 on:
   workflow_dispatch:
   push:
     paths:
       - 'assets/animation-source.mp4'
-
 permissions:
   contents: write
-
-concurrency:
-  group: pemesa-film-frames
-  cancel-in-progress: false
-
 jobs:
-  render:
+  prepare:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install Python image/video packages
-        run: python -m pip install --disable-pip-version-check pillow numpy opencv-python-headless
-      - name: Render 180 WebP frames from uploaded video
-        shell: bash
+      - name: Check whether the published video matches the source
+        id: source
         run: |
-          test -s assets/animation-source.mp4
-          mkdir -p frames-film frames-film-mobile
-          python - <<'PY'
-          from pathlib import Path
-          import cv2
-          from PIL import Image
-          source='assets/animation-source.mp4'
-          cap=cv2.VideoCapture(source)
-          if not cap.isOpened(): raise RuntimeError('Cannot decode uploaded MP4')
-          target=Path('frames-film')
-          mobile=Path('frames-film-mobile')
-          for i in range(180):
-              ok,frame=cap.read()
-              if not ok: raise RuntimeError(f'Video ends before frame {i+1}')
-              rgb=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
-              image=Image.fromarray(rgb)
-              image.save(target/f'frame_{i+1:04d}.webp',
-                         format='WEBP',quality=78,method=1)
-              mobile_width=min(640,image.width)
-              mobile_height=round(image.height*mobile_width/image.width)
-              image.resize((mobile_width,mobile_height),Image.Resampling.LANCZOS).save(
-                  mobile/f'frame_{i+1:04d}.webp',format='WEBP',quality=75,method=1)
-          cap.release()
-          assert len(list(target.glob('frame_*.webp')))==180
-          assert len(list(mobile.glob('frame_*.webp')))==180
-          print('Successfully produced 180 frames.')
-          PY
-      - name: Publish frames on main
-        shell: bash
+          version=$(sha256sum assets/animation-source.mp4 | cut -c1-8)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if ! grep -Fq "assets/home-scroll.mp4?v=$version" index.html; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Encode scroll video and poster
+        if: steps.source.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.source.outputs.version }}
         run: |
-          git config user.name 'PEMESA Frames Bot'
+          sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+          ffmpeg -y -i assets/animation-source.mp4 -vf fps=23 -an -c:v libx264 -preset slow -crf 25 -g 8 -keyint_min 8 -bf 0 -pix_fmt yuv420p -movflags +faststart assets/home-scroll.mp4
+          ffmpeg -y -i assets/animation-source.mp4 -frames:v 1 -c:v libwebp -quality 84 assets/home-poster.webp
+          sed -i -E "s@(assets/home-(scroll.mp4|poster.webp)\?v=)[a-f0-9]+@\1$VERSION@g" index.html
+          git config user.name 'PEMESA Video Bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          # Publish fresh cache keys atomically with the new animation frames.
-          python - <<'PY'
-          import hashlib, re
-          from pathlib import Path
-          version='film-'+hashlib.sha256(Path('assets/animation-source.mp4').read_bytes()).hexdigest()[:12]
-          for filename, pattern, replacement in [
-              ('home-scroll.js', r"const FRAME_ASSET_VERSION = '[^']+';", f"const FRAME_ASSET_VERSION = '{version}';"),
-              ('index.html', r'home-scroll\.js\?v=[^"]+', f'home-scroll.js?v={version}')
-          ]:
-              path=Path(filename)
-              text=path.read_text(encoding='utf-8')
-              updated,n=re.subn(pattern,replacement,text)
-              if n!=1: raise RuntimeError(f'Expected one cache key in {filename}, found {n}')
-              path.write_text(updated,encoding='utf-8')
-          PY
-          git add frames-film/frame_*.webp frames-film-mobile/frame_*.webp home-scroll.js index.html
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Publish 180 video-derived frames for PEMESA homepage'
-          git pull --rebase origin main
+          git add index.html assets/home-scroll.mp4 assets/home-poster.webp
+          git commit -m 'Refresh the PEMESA scroll video and poster'
           git push origin HEAD:main

@@ -3,7 +3,7 @@
 #site #pemesa-scroll-experience.pm-native-scroll{height:500vh}
 #site #pemesa-scroll-experience .pm-scroll-stage{position:relative;overflow:hidden;width:100%;height:100vh;height:100dvh;isolation:isolate;background:#dcd0c8}
 #site #pemesa-scroll-experience.pm-native-scroll .pm-scroll-stage{position:sticky;top:0}
-#site #pemesa-scroll-experience canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;pointer-events:none}
+#site #pemesa-scroll-experience video{object-fit:cover;position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;pointer-events:none}
 #site #pemesa-scroll-experience .pm-fallback-art{position:absolute;z-index:0;top:4%;bottom:4%;left:36%;right:-9%;pointer-events:none;overflow:hidden;background:radial-gradient(ellipse at 46% 50%,rgba(250,244,240,.9),transparent 55%),radial-gradient(ellipse at 65% 55%,rgba(188,150,137,.38),transparent 57%)}
 #site #pemesa-scroll-experience .pm-fallback-art::before{content:"";position:absolute;width:min(63vw,780px);height:min(63vw,780px);top:50%;left:52%;transform:translate(-50%,-50%) rotate(-28deg);border-radius:50%;background:repeating-conic-gradient(from 20deg,rgba(255,251,245,.95) 0deg 1.2deg,rgba(137,111,107,.2) 1.5deg 2.45deg,transparent 3.1deg 4.5deg);-webkit-mask-image:radial-gradient(circle,transparent 0 26%,#000 29% 56%,transparent 70%);mask-image:radial-gradient(circle,transparent 0 26%,#000 29% 56%,transparent 70%);filter:drop-shadow(1px 18px 25px rgba(78,45,31,.14));animation:pm-fiber-rotate 26s linear infinite}
 #site #pemesa-scroll-experience .pm-fallback-art::after{content:"";position:absolute;width:25vw;max-width:300px;height:25vw;max-height:300px;border-radius:50%;top:51%;left:52%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,245,199,.88) 0%,rgba(245,146,72,.64) 19%,rgba(230,120,67,.15) 50%,transparent 70%);filter:blur(23px)}
@@ -48,9 +48,6 @@ html[dir=rtl] #site #pemesa-scroll-experience .pm-story-footer{direction:rtl}
 @media(max-width:600px){html[dir=rtl] #site #pemesa-scroll-experience .pm-chapter{right:20px;left:auto}}
 @media(prefers-reduced-motion:reduce){#site #pemesa-scroll-experience .pm-fallback-art::before{animation:none}#site #pemesa-scroll-experience .pm-chapter{will-change:auto}}
 
-#site #pemesa-scroll-experience canvas{visibility:hidden}
-#site #pemesa-scroll-experience.pm-frames-ready canvas{visibility:visible}
-
 html.lenis{scroll-behavior:auto!important}
 html.lenis body{scroll-behavior:auto!important}
 
@@ -62,7 +59,7 @@ html.lenis body{scroll-behavior:auto!important}
     --pm-visual-height:min(36vw, 74.8125dvh);
     --pm-visual-offset:3%;
   }
-  #site #pemesa-scroll-experience #pemesa-sequence-canvas,
+  #site #pemesa-scroll-experience #pemesa-scroll-video,
   #site #pemesa-scroll-experience .pm-fallback-art{
     inset:auto;
     top:50%;
@@ -73,7 +70,8 @@ html.lenis body{scroll-behavior:auto!important}
     height:var(--pm-visual-height);
     transform:translateY(-50%);
   }
-  #site #pemesa-scroll-experience #pemesa-sequence-canvas{
+  #site #pemesa-scroll-experience #pemesa-scroll-video{
+    object-fit:contain;
     -webkit-mask-image:linear-gradient(to right,transparent,#000 14%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);
     -webkit-mask-composite:source-in;
     mask-image:linear-gradient(to right,transparent,#000 14%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);
@@ -86,7 +84,7 @@ html.lenis body{scroll-behavior:auto!important}
   #site #pemesa-scroll-experience .pm-scroll-gradient{
     background:linear-gradient(90deg,#dcd0c8 0%,#dcd0c8 27%,rgba(220,208,200,.65) 39%,transparent 55%);
   }
-  html[dir=rtl] #site #pemesa-scroll-experience #pemesa-sequence-canvas,
+  html[dir=rtl] #site #pemesa-scroll-experience #pemesa-scroll-video,
   html[dir=rtl] #site #pemesa-scroll-experience .pm-fallback-art{
     right:auto;left:var(--pm-visual-offset);
   }
