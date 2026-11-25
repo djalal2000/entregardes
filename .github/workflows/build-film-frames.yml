@@ -5,7 +5,6 @@ on:
   push:
     paths:
       - 'assets/animation-source.mp4'
-      - '.github/workflows/build-film-frames.yml'
 
 permissions:
   contents: write
@@ -49,7 +48,9 @@ jobs:
               image=Image.fromarray(rgb)
               image.save(target/f'frame_{i+1:04d}.webp',
                          format='WEBP',quality=78,method=1)
-              image.resize((640,360),Image.Resampling.LANCZOS).save(
+              mobile_width=min(640,image.width)
+              mobile_height=round(image.height*mobile_width/image.width)
+              image.resize((mobile_width,mobile_height),Image.Resampling.LANCZOS).save(
                   mobile/f'frame_{i+1:04d}.webp',format='WEBP',quality=75,method=1)
           cap.release()
           assert len(list(target.glob('frame_*.webp')))==180
@@ -61,7 +62,22 @@ jobs:
         run: |
           git config user.name 'PEMESA Frames Bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add frames-film/frame_*.webp frames-film-mobile/frame_*.webp
+          # Publish fresh cache keys atomically with the new animation frames.
+          python - <<'PY'
+          import hashlib, re
+          from pathlib import Path
+          version='film-'+hashlib.sha256(Path('assets/animation-source.mp4').read_bytes()).hexdigest()[:12]
+          for filename, pattern, replacement in [
+              ('home-scroll.js', r"const FRAME_ASSET_VERSION = '[^']+';", f"const FRAME_ASSET_VERSION = '{version}';"),
+              ('index.html', r'home-scroll\.js\?v=[^"]+', f'home-scroll.js?v={version}')
+          ]:
+              path=Path(filename)
+              text=path.read_text(encoding='utf-8')
+              updated,n=re.subn(pattern,replacement,text)
+              if n!=1: raise RuntimeError(f'Expected one cache key in {filename}, found {n}')
+              path.write_text(updated,encoding='utf-8')
+          PY
+          git add frames-film/frame_*.webp frames-film-mobile/frame_*.webp home-scroll.js index.html
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'Publish 180 video-derived frames for PEMESA homepage'
           git pull --rebase origin main
