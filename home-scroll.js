@@ -19,8 +19,6 @@
   if (!root || !stage || !canvas || !site) return;
   const ctx = canvas.getContext('2d', { alpha: false });
   const chapters = [...root.querySelectorAll('[data-pm-chapter]')];
-  const progressFill = root.querySelector('#pemesa-progress-fill');
-  const progressText = root.querySelector('#pemesa-progress-percent');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const frames = Array(FRAME_COUNT).fill(null);
   const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
@@ -88,9 +86,6 @@
   }
   function updateProgress(progress) {
     currentProgress = clamp(progress, 0, 1);
-    const percent = Math.round(currentProgress * 100);
-    progressFill.style.height = percent + '%';
-    progressText.textContent = String(percent).padStart(2, '0') + '%';
     showChapter(currentProgress);
     if (ready) drawFrame(Math.round(currentProgress * (FRAME_COUNT - 1)));
     pumpFrames();
