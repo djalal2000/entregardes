@@ -7,7 +7,10 @@
   // No frame blending: the video sequence is controlled directly by scroll position.
   const FRAME_BASE = matchMedia('(max-width:700px)').matches ? './frames-film-mobile' : './frames-film';
   const FRAME_ASSET_VERSION = '20261124-film3';
-  const LOADERS = 7;
+  const LOADERS = 3;
+  const CACHE_LIMIT = FRAME_BASE.includes('mobile') ? 28 : 36;
+  const ANCHORS = Array.from({ length: 9 }, (_, i) => i * 22).concat(FRAME_COUNT - 1);
+  const anchorSet = new Set(ANCHORS);
   const SCROLL_HEIGHTS = 4.5;
   const root = document.querySelector('#pemesa-scroll-experience');
   const stage = document.querySelector('#pemesa-scroll-stage');
@@ -16,11 +19,6 @@
   if (!root || !stage || !canvas || !site) return;
   const ctx = canvas.getContext('2d', { alpha: false });
   const chapters = [...root.querySelectorAll('[data-pm-chapter]')];
-  const loader = root.querySelector('#pemesa-sequence-loader');
-  const loadNumber = root.querySelector('#pemesa-loading-percent');
-  const loadBar = root.querySelector('#pemesa-loading-bar');
-  const loadCaption = root.querySelector('#pemesa-loading-caption');
-  const loadSkip = root.querySelector('#pemesa-loading-skip');
   const progressFill = root.querySelector('#pemesa-progress-fill');
   const progressText = root.querySelector('#pemesa-progress-percent');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
@@ -38,7 +36,11 @@
   ];
   let dpr = 1, width = 0, height = 0, currentIndex = -1, currentProgress = 0;
   let scrollTrigger = null, lenis = null, tickerCallback = null;
-  let nativeScheduled = false, loading = false, ready = false;
+  let nativeScheduled = false, ready = false;
+  let started = false, backgroundReady = false, redrawScheduled = false;
+  let currentImage = null;
+  const inFlight = new Set();
+  const failedFrames = new Set();
   let resizeObserver = null, visibilityObserver = null;
 
   function opacity(progress, cfg) {
@@ -70,9 +72,8 @@
   function drawFrame(index) {
     if (!ctx || !width || !height) return;
     const target = reduce.matches ? 0 : clamp(index, 0, FRAME_COUNT - 1);
-    if (target === currentIndex) return;
     const image = closestFrame(target);
-    if (!image) return;
+    if (!image || (target === currentIndex && image === currentImage)) return;
     const fit = matchMedia('(min-width:901px)').matches ? Math.min : Math.max;
     const scale = fit(width / image.naturalWidth, height / image.naturalHeight);
     const drawnWidth = image.naturalWidth * scale;
@@ -83,6 +84,7 @@
     ctx.fillRect(0, 0, width, height);
     ctx.drawImage(image, x, y, drawnWidth, drawnHeight);
     currentIndex = target;
+    currentImage = image;
   }
   function updateProgress(progress) {
     currentProgress = clamp(progress, 0, 1);
@@ -91,6 +93,7 @@
     progressText.textContent = String(percent).padStart(2, '0') + '%';
     showChapter(currentProgress);
     if (ready) drawFrame(Math.round(currentProgress * (FRAME_COUNT - 1)));
+    pumpFrames();
   }
   function resize() {
     if (!ctx || site.hidden) return;
@@ -112,7 +115,7 @@
     return new Promise((resolve, reject) => {
       const image = new Image();
       image.decoding = 'async';
-      if (index === 0) image.fetchPriority = 'high';
+      image.fetchPriority = index === 0 ? 'high' : 'low';
       image.onload = () => {
         if (!image.naturalWidth || !image.naturalHeight) reject(new Error('Image WebP illisible'));
         else resolve(image);
@@ -121,58 +124,84 @@
       image.src = filename(index);
     });
   }
-  function displayLoadProgress(completed, total) {
-    const pct = Math.round((completed / total) * 100);
-    loadNumber.textContent = pct + '%';
-    loadBar.style.width = pct + '%';
-    loadCaption.textContent = completed + ' / ' + total + ' images';
+  // Do not block the home page: load the first frame, then only the
+  // useful frames around the scroll position plus sparse seek anchors.
+  function targetIndex() {
+    return reduce.matches ? 0 : Math.round(currentProgress * (FRAME_COUNT - 1));
   }
-  function dismissLoader() {
-    loader.classList.add('is-hidden');
-    window.setTimeout(() => { loader.hidden = true; }, 500);
+  function trimCache(target) {
+    const loaded = frames.reduce((n, image) => n + Boolean(image), 0);
+    if (loaded <= CACHE_LIMIT) return;
+    const evictable = frames.map((image, index) => ({ image, index }))
+      .filter(item => item.image && !anchorSet.has(item.index) &&
+        item.image !== currentImage && item.index !== target)
+      .sort((a, b) => Math.abs(b.index - target) - Math.abs(a.index - target));
+    for (const item of evictable.slice(0, loaded - CACHE_LIMIT)) frames[item.index] = null;
   }
-  loadSkip?.addEventListener('click', dismissLoader);
-  async function prepareFrames() {
-    if (loading) return;
-    loading = true;
-    try {
-      // Avoid a broken page when the /frames assets have not been uploaded.
-      frames[0] = await loadFrame(0);
-    } catch {
-      root.classList.add('pm-no-frames');
-      console.info('[PEMESA] Séquence film de 180 images en attente dans /frames-film.');
-      loading = false;
-      return;
+  function requestRedraw() {
+    if (redrawScheduled) return;
+    redrawScheduled = true;
+    requestAnimationFrame(() => {
+      redrawScheduled = false;
+      if (site.hidden || !ready) return;
+      drawFrame(targetIndex());
+    });
+  }
+  function queueOrder(target) {
+    if (reduce.matches) return [0];
+    if (!ready) return [target, 0, ...ANCHORS];
+    const nearby = [target];
+    for (let distance = 1; distance <= 10; distance++) {
+      nearby.push(target + distance, target - distance);
     }
-    ready = true;
-    root.classList.add('pm-frames-ready');
-    resize();
-    drawFrame(Math.round(currentProgress * (FRAME_COUNT - 1)));
-    if (reduce.matches) { loading = false; return; }
-    loader.hidden = false;
-    loader.classList.remove('is-hidden');
-    let completed = 1, next = 1, failed = 0;
-    displayLoadProgress(completed, FRAME_COUNT);
-    async function worker() {
-      while (next < FRAME_COUNT) {
-        const i = next++;
-        try { frames[i] = await loadFrame(i); }
-        catch (err) { failed++; console.warn('[PEMESA frames]', err.message); }
-        completed++;
-        displayLoadProgress(completed, FRAME_COUNT);
-      }
+    const anchors = [...ANCHORS].sort((a, b) => Math.abs(a - target) - Math.abs(b - target));
+    return [...nearby.slice(0, 7), ...anchors, ...nearby.slice(7)];
+  }
+  function pumpFrames() {
+    if (!started || site.hidden || !ctx) return;
+    const target = targetIndex();
+    const limit = ready && backgroundReady && !reduce.matches ? LOADERS : 1;
+    // Until the page has loaded, fetch only the first useful image.
+    if (ready && !backgroundReady && target === 0) return;
+    const order = queueOrder(target);
+    while (inFlight.size < limit) {
+      const index = order.find(i => i >= 0 && i < FRAME_COUNT &&
+        !frames[i] && !inFlight.has(i) && !failedFrames.has(i));
+      if (index === undefined) break;
+      inFlight.add(index);
+      loadFrame(index).then(image => {
+        frames[index] = image;
+        if (!ready) {
+          ready = true;
+          root.classList.remove('pm-no-frames');
+          root.classList.add('pm-frames-ready');
+          resize();
+        }
+        trimCache(targetIndex());
+        requestRedraw();
+      }).catch(err => {
+        failedFrames.add(index);
+        console.warn('[PEMESA frames]', err.message);
+      }).finally(() => {
+        inFlight.delete(index);
+        pumpFrames();
+      });
     }
-    await Promise.all(Array.from({ length: LOADERS }, worker));
-    loading = false;
-    if (failed) {
-      console.warn('[PEMESA frames] ' + failed + ' frames absentes. Des images voisines seront utilisées.');
-      loadCaption.textContent = 'Séquence partiellement chargée';
-    } else {
-      loadCaption.textContent = 'Animation prête';
+  }
+  function prepareFrames() {
+    if (started) return;
+    started = true;
+    pumpFrames();
+    const enableBackground = () => {
+      backgroundReady = true;
+      pumpFrames();
+    };
+    if (document.readyState === 'complete') enableBackground();
+    else {
+      window.addEventListener('load', enableBackground, { once: true });
+      // Avoid waiting indefinitely for unrelated third-party resources.
+      window.setTimeout(enableBackground, 1200);
     }
-    currentIndex = -1;
-    drawFrame(Math.round(currentProgress * (FRAME_COUNT - 1)));
-    window.setTimeout(dismissLoader, 150);
   }
   function nativeUpdate() {
     if (site.hidden) return;
@@ -202,6 +231,7 @@
       return;
     }
     createLenis();
+    pumpFrames();
     if (scrollTrigger) {
       scrollTrigger.enable(false, true);
       requestAnimationFrame(() => { resize(); ScrollTrigger.refresh(); });
@@ -245,6 +275,11 @@
     visibilityObserver.observe(site, { attributes: true, attributeFilter: ['hidden'] });
     updateProgress(0);
   }
+  reduce.addEventListener?.('change', () => {
+    currentIndex = -1;
+    requestRedraw();
+    pumpFrames();
+  });
   window.PEMESA_HOME_SCROLL = {
     refresh: () => { if (scrollTrigger) ScrollTrigger.refresh(); resize(); },
     get hasFrames() { return ready; },
