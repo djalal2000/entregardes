@@ -6,7 +6,7 @@
   // Exact motion extracted from the user-supplied reference video.
   // No frame blending: the video sequence is controlled directly by scroll position.
   const FRAME_BASE = matchMedia('(max-width:700px)').matches ? './frames-film-mobile' : './frames-film';
-  const FRAME_ASSET_VERSION = '20261124-film2';
+  const FRAME_ASSET_VERSION = '20261124-film3';
   const LOADERS = 7;
   const SCROLL_HEIGHTS = 4.5;
   const root = document.querySelector('#pemesa-scroll-experience');
@@ -73,7 +73,8 @@
     if (target === currentIndex) return;
     const image = closestFrame(target);
     if (!image) return;
-    const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+    const fit = matchMedia('(min-width:901px)').matches ? Math.min : Math.max;
+    const scale = fit(width / image.naturalWidth, height / image.naturalHeight);
     const drawnWidth = image.naturalWidth * scale;
     const drawnHeight = image.naturalHeight * scale;
     const x = (width - drawnWidth) * .5;
@@ -93,7 +94,7 @@
   }
   function resize() {
     if (!ctx || site.hidden) return;
-    const rect = stage.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     const nextWidth = Math.max(1, Math.round(rect.width));
     const nextHeight = Math.max(1, Math.round(rect.height));
     const nextDpr = Math.min(devicePixelRatio || 1, 1.8);
@@ -238,7 +239,7 @@
     }, { passive: true });
     if ('ResizeObserver' in window) {
       resizeObserver = new ResizeObserver(resize);
-      resizeObserver.observe(stage);
+      resizeObserver.observe(canvas);
     }
     visibilityObserver = new MutationObserver(switchVisible);
     visibilityObserver.observe(site, { attributes: true, attributeFilter: ['hidden'] });
