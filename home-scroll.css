@@ -53,3 +53,41 @@ html[dir=rtl] #site #pemesa-scroll-experience .pm-story-footer{direction:rtl}
 
 html.lenis{scroll-behavior:auto!important}
 html.lenis body{scroll-behavior:auto!important}
+
+/* PEMESA: reduced, right-aligned cinematic artwork on wide screens.
+   Preserve the original mobile layout and the document direction. */
+@media(min-width:901px){
+  #site #pemesa-scroll-experience .pm-scroll-stage{
+    --pm-visual-width:min(64vw, 133dvh);
+    --pm-visual-height:min(36vw, 74.8125dvh);
+    --pm-visual-offset:3%;
+  }
+  #site #pemesa-scroll-experience #pemesa-sequence-canvas,
+  #site #pemesa-scroll-experience .pm-fallback-art{
+    inset:auto;
+    top:50%;
+    right:var(--pm-visual-offset);
+    left:auto;
+    bottom:auto;
+    width:var(--pm-visual-width);
+    height:var(--pm-visual-height);
+    transform:translateY(-50%);
+  }
+  #site #pemesa-scroll-experience #pemesa-sequence-canvas{
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 14%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to right,transparent,#000 14%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);
+    mask-composite:intersect;
+  }
+  #site #pemesa-scroll-experience .pm-fallback-art::before{
+    width:min(43vw,61dvh);height:min(43vw,61dvh);
+  }
+  #site #pemesa-scroll-experience .pm-chapter{width:min(510px,37vw)}
+  #site #pemesa-scroll-experience .pm-scroll-gradient{
+    background:linear-gradient(90deg,#dcd0c8 0%,#dcd0c8 27%,rgba(220,208,200,.65) 39%,transparent 55%);
+  }
+  html[dir=rtl] #site #pemesa-scroll-experience #pemesa-sequence-canvas,
+  html[dir=rtl] #site #pemesa-scroll-experience .pm-fallback-art{
+    right:auto;left:var(--pm-visual-offset);
+  }
+}
